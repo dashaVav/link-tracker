@@ -20,10 +20,19 @@ public class HelpCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
+        long id = update.message().chat().id();
+
         StringBuilder helpMessage = new StringBuilder("Список доступных команд:\n");
-        for(CommandInfo commandInfo: CommandInfo.values()) {
-            helpMessage.append(commandInfo.getCommand()).append(" - ").append(commandInfo.getDescription()).append("\n");
+        for (CommandInfo commandInfo : CommandInfo.values()) {
+            helpMessage.append(commandInfo.getCommand()).append(" - ").append(commandInfo.getDescription())
+                .append("\n");
         }
-        return new SendMessage(update.message().chat().id(), helpMessage.toString());
+        return new SendMessage(id, helpMessage.toString());
     }
+
+    @Override
+    public boolean isCorrect(Update update) {
+        return update.message().text().equals(command());
+    }
+
 }

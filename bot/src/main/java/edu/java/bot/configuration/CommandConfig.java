@@ -6,6 +6,7 @@ import edu.java.bot.comands.ListCommand;
 import edu.java.bot.comands.StartCommand;
 import edu.java.bot.comands.TrackCommand;
 import edu.java.bot.comands.UntrackCommand;
+import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -32,13 +33,13 @@ public class CommandConfig {
     }
 
     @Bean
-    public TrackCommand trackCommand(ChatRepository repository) {
-        return new TrackCommand(repository);
+    public TrackCommand trackCommand(ChatRepository repository, LinkHandlerChain linkHandlerChain) {
+        return new TrackCommand(repository, linkHandlerChain);
     }
 
     @Bean
-    public UntrackCommand untrackCommand(ChatRepository repository) {
-        return new UntrackCommand(repository);
+    public UntrackCommand untrackCommand(ChatRepository repository, LinkHandlerChain linkHandlerChain) {
+        return new UntrackCommand(repository, linkHandlerChain);
     }
 
     @Bean

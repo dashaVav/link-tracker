@@ -25,12 +25,20 @@ public class StartCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
+        String message;
 
         if (repository.isRegistered(id)) {
-            return new SendMessage(id, "Вы уже зарегистрированы.");
+            message = "Извините, но данный аккаунт уже зарегистрирован.";
         } else {
             repository.register(id);
-            return new SendMessage(id, "Регистрация прошла успешно!");
+            message = "Регистрация прошла успешно. Добро пожаловать!";
         }
+
+        return new SendMessage(id, message);
+    }
+
+    @Override
+    public boolean isCorrect(Update update) {
+        return update.message().text().equals(command());
     }
 }

@@ -1,15 +1,14 @@
-package edu.java.bot;
+package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.comands.UntrackCommand;
 import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import java.net.URI;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
@@ -33,7 +32,7 @@ public class UntrackCommandTest {
     private UntrackCommand untrackCommand;
     private Update update;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         untrackCommand = new UntrackCommand(mockRepository, mockLinkHandlerChain);
@@ -55,7 +54,6 @@ public class UntrackCommandTest {
     public void testDescription() {
         assertEquals("прекратить отслеживание ссылки", untrackCommand.description());
     }
-
 
     @Test
     public void testHandle_WithNonexistentLink() {

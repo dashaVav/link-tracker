@@ -1,4 +1,4 @@
-package edu.java.bot;
+package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
@@ -6,8 +6,8 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.comands.Command;
 import edu.java.bot.comands.StartCommand;
 import edu.java.bot.repository.ChatRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
@@ -26,7 +26,7 @@ public class StartCommandTest {
     private Command startCommand;
     private final Update update = mock(Update.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         startCommand = new StartCommand(repository);

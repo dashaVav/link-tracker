@@ -1,11 +1,11 @@
-package edu.java.bot;
+package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.comands.HelpCommand;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +16,7 @@ public class HelpCommandTest {
     private HelpCommand helpCommand;
     private Update update;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         helpCommand = new HelpCommand();
 

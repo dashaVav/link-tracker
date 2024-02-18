@@ -1,4 +1,4 @@
-package edu.java.bot;
+package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
@@ -10,8 +10,8 @@ import edu.java.bot.repository.ChatRepository;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
@@ -23,7 +23,7 @@ public class ListCommandTest {
     private final Update update = mock(Update.class);
     private final Message message = mock(Message.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         repository = mock(ChatRepository.class);
         listCommand = new ListCommand(repository);

@@ -2,7 +2,6 @@ package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.repository.ChatRepository;
 
 public interface Command {
@@ -10,7 +9,7 @@ public interface Command {
 
     String description();
 
-    SendMessage handle(Update update);
+    String handle(Update update);
 
     boolean isCorrect(Update update);
 

@@ -1,7 +1,6 @@
 package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.repository.ChatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class StartCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public String handle(Update update) {
         long id = update.message().chat().id();
         String message;
 
@@ -34,7 +33,7 @@ public class StartCommand implements Command {
             message = "Регистрация прошла успешно. Добро пожаловать!";
         }
 
-        return new SendMessage(id, message);
+        return message;
     }
 
     @Override

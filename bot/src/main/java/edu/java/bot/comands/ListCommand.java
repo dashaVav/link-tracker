@@ -1,7 +1,6 @@
 package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.links.Link;
 import edu.java.bot.repository.ChatRepository;
 import java.util.List;
@@ -25,13 +24,12 @@ public class ListCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public String handle(Update update) {
         long id = update.message().chat().id();
 
         List<Link> links = repository.getList(id);
-        String result = links.isEmpty() ? "Список отслеживаемых ссылок пуст." : listOfLinks(links);
 
-        return new SendMessage(id, result);
+        return links.isEmpty() ? "Список отслеживаемых ссылок пуст." : listOfLinks(links);
     }
 
     @Override

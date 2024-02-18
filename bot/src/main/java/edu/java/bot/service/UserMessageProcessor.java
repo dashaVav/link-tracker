@@ -34,7 +34,7 @@ public class UserMessageProcessor {
                     );
                 }
 
-                return commandName.handle(update);
+                return new SendMessage(chatId, commandName.handle(update));
             }
         }
         return new SendMessage(chatId, "Неизвестная команда.");

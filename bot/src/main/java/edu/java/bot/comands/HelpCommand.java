@@ -1,7 +1,6 @@
 package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,15 +18,13 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update) {
-        long id = update.message().chat().id();
-
+    public String handle(Update update) {
         StringBuilder helpMessage = new StringBuilder("Список доступных команд:\n");
         for (CommandInfo command : CommandInfo.values()) {
             helpMessage.append(command.getCommand()).append(" - ").append(command.getDescription())
                 .append("\n");
         }
-        return new SendMessage(id, helpMessage.toString());
+        return helpMessage.toString();
     }
 
     @Override

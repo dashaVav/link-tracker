@@ -1,7 +1,6 @@
 package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
@@ -28,17 +27,17 @@ public class UntrackCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public String handle(Update update) {
         long id = update.message().chat().id();
 
         URI uri = URI.create(CommandUtils.getLink(update.message().text()));
         Link link = linkHandlerChain.handleRequestUnsubscribe(uri);
 
         if (!repository.containsLink(id, link)) {
-            return new SendMessage(id, String.format("Ссылки %s нет в ваших подписках.", link));
+            return String.format("Ссылки %s нет в ваших подписках.", link);
         } else {
             repository.removeLink(id, link);
-            return new SendMessage(id, String.format("Ссылка %s успешно удалена.", link));
+            return String.format("Ссылка %s успешно удалена.", link);
         }
     }
 

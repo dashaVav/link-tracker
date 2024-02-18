@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.repository.ChatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -28,7 +29,8 @@ public class ListCommand implements Command {
         if (!repository.isRegistered(id)) {
             return new SendMessage(id, "Вы не зарегистрированы. Команда недоступна.");
         }
-
-        return new SendMessage(id, repository.getList(id).toString());
+        List<String> links = repository.getList(id);
+        String result = links.isEmpty() ? "Empty" : links.toString();
+        return new SendMessage(id, result);
     }
 }

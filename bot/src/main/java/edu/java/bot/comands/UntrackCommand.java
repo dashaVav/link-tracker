@@ -30,9 +30,18 @@ public class UntrackCommand implements Command {
             return new SendMessage(id, "Вы не зарегистрированы. Команда недоступна.");
         }
 
-        String link = MessageUtils.getLink(update.message().text());
-        repository.removeLink(id, link);
-        return new SendMessage(id, String.format("Ссылка %s успешно удалена.", link));
+        try {
+            String link = MessageUtils.getLink(update.message().text());
+
+            if (!repository.containsLink(id, link)) {
+                return new SendMessage(id, String.format("Ссылки %s нет", link));
+            } else {
+
+            repository.removeLink(id, link);
+            return new SendMessage(id, String.format("Ссылка %s успешно удалена.", link));}
+        } catch (Exception e) {
+            return new SendMessage(id, "Нужно еще ссылку добавить");
+        }
     }
 
 }

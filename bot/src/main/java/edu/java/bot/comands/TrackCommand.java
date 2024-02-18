@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class TrackCommand implements Command{
+public class TrackCommand implements Command {
 
     private final ChatRepository repository;
     private static final CommandInfo commandInfo = CommandInfo.TRACK;
@@ -31,8 +31,13 @@ public class TrackCommand implements Command{
             return new SendMessage(id, "Вы не зарегистрированы. Команда недоступна.");
         }
 
-        String link = MessageUtils.getLink(update.message().text());
-        repository.addLink(id, link);
-        return new SendMessage(id, String.format("Ссылка %s успешно добавлена", link));
+        try {
+            String link = MessageUtils.getLink(update.message().text());
+
+            repository.addLink(id, link);
+            return new SendMessage(id, String.format("Ссылка %s успешно добавлена", link));
+        } catch (Exception e) {
+            return new SendMessage(id, "Нужно еще ссылку добавить");
+        }
     }
 }

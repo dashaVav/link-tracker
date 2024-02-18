@@ -10,7 +10,7 @@ public enum CommandInfo {
     HELP("/help", " вывести окно с командами"),
     TRACK("/track", "начать отслеживание ссылки"),
     UNTRACK("/untrack", "прекратить отслеживание ссылки"),
-    LIST("/list ", "показать список отслеживаемых ссылок");
+    LIST("/list", "показать список отслеживаемых ссылок");
 
     private final String command;
     private final String description;

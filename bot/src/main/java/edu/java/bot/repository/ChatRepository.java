@@ -25,6 +25,10 @@ public class ChatRepository {
         chats.get(id).remove(link);
     }
 
+    public boolean containsLink(Long id, String link) {
+        return chats.get(id).contains(link);
+    }
+
     public List<String> getList(Long id) {
         return chats.get(id);
     }

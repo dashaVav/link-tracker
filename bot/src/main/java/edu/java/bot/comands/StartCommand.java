@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class StartCommand implements Command {
     private final ChatRepository repository;
-    private static final CommandInfo commandInfo = CommandInfo.START;
+    private static final CommandInfo COMMAND_INFO = CommandInfo.START;
 
     @Override
     public String command() {
-        return commandInfo.getCommand();
+        return COMMAND_INFO.getCommand();
     }
 
     @Override
     public String description() {
-        return commandInfo.getDescription();
+        return COMMAND_INFO.getDescription();
     }
 
     @Override

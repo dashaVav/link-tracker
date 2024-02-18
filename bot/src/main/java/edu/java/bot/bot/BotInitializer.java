@@ -35,7 +35,7 @@ public class BotInitializer {
         });
     }
 
-    public void setMyCommands(List<Command> commands) {
+    private void setMyCommands(List<Command> commands) {
         List<BotCommand> botCommands = commands.stream().map(Command::toApiCommand).toList();
         SetMyCommands setMyCommands = new SetMyCommands(botCommands.toArray(BotCommand[]::new));
         bot.execute(setMyCommands);

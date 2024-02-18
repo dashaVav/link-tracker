@@ -1,18 +1,25 @@
 package edu.java.bot.links;
 
-import edu.java.bot.utils.Link;
 import java.net.URI;
 
 public class GitHubHandler extends LinkHandler {
-    private final static String host = LinkInfo.GITHUB.getHost();
+    private final static LinkInfo LINK_INFO = LinkInfo.GITHUB;
 
     @Override
-    public Link handleRequest(String url) {
-        if (url.contains(host)) {
-            System.out.println("Отслеживание обновлений на GitHub: " + url);
-            return new Link(URI.create(url), LinkInfo.GITHUB, host);
+    public Link subscribe(URI uri) {
+        if (uri.getHost().equals(LINK_INFO.getHost())) {
+            return new Link(LinkInfo.GITHUB, uri, LINK_INFO.getHost());
         } else {
-            return super.handleRequest(url);
+            return super.subscribe(uri);
+        }
+    }
+
+    @Override
+    public Link unsubscribe(URI uri) {
+        if (uri.getHost().equals(LINK_INFO.getHost())) {
+            return new Link(LinkInfo.GITHUB, uri, LINK_INFO.getHost());
+        } else {
+            return super.unsubscribe(uri);
         }
     }
 }

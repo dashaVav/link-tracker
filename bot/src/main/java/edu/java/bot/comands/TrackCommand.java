@@ -2,10 +2,11 @@ package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
-import edu.java.bot.utils.Link;
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,38 +16,31 @@ public class TrackCommand implements Command {
 
     private final ChatRepository repository;
     private final LinkHandlerChain linkHandlerChain;
-    private static final CommandInfo commandInfo = CommandInfo.TRACK;
+    private static final CommandInfo COMMAND_INFO = CommandInfo.TRACK;
 
     @Override
     public String command() {
-        return commandInfo.getCommand();
+        return COMMAND_INFO.getCommand();
     }
 
     @Override
     public String description() {
-        return commandInfo.getDescription();
+        return COMMAND_INFO.getDescription();
     }
 
     @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
-        if (!repository.isRegistered(id)) {
-            return new SendMessage(id, "Вы не зарегистрированы. Команда недоступна.");
+
+        URI uri = URI.create(CommandUtils.getLink(update.message().text()));
+        Link link = linkHandlerChain.handleRequestSubscribe(uri);
+
+        if (link == null) {
+            return new SendMessage(id, String.format("Извините, ссылка %s не поддерживается.", uri));
         }
 
-        try {
-            String link = CommandUtils.getLink(update.message().text());
-            Link linkAfterCheck = linkHandlerChain.handleRequest(link);
-
-            if (linkAfterCheck == null) {
-                return new SendMessage(id, String.format("Ссылка %s не поддерживается", link));
-            }
-
-            repository.addLink(id, linkAfterCheck);
-            return new SendMessage(id, String.format("Ссылка %s успешно добавлена", link));
-        } catch (Exception e) {
-            return new SendMessage(id, "Нужно еще ссылку добавить");
-        }
+        repository.addLink(id, link);
+        return new SendMessage(id, String.format("Ссылка %s успешно добавлена.", uri));
     }
 
     @Override

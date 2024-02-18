@@ -2,10 +2,11 @@ package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
-import edu.java.bot.utils.Link;
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,37 +15,30 @@ import org.springframework.stereotype.Component;
 public class UntrackCommand implements Command {
     private final ChatRepository repository;
     private final LinkHandlerChain linkHandlerChain;
-    private static final CommandInfo commandInfo = CommandInfo.UNTRACK;
+    private static final CommandInfo COMMAND_INFO = CommandInfo.UNTRACK;
 
     @Override
     public String command() {
-        return commandInfo.getCommand();
+        return COMMAND_INFO.getCommand();
     }
 
     @Override
     public String description() {
-        return commandInfo.getDescription();
+        return COMMAND_INFO.getDescription();
     }
 
     @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
-        if (!repository.isRegistered(id)) {
-            return new SendMessage(id, "Вы не зарегистрированы. Команда недоступна.");
-        }
 
-        try {
-            String link = CommandUtils.getLink(update.message().text());
-            Link linkAfterCheck = linkHandlerChain.handleRequest(link);
+        URI uri = URI.create(CommandUtils.getLink(update.message().text()));
+        Link link = linkHandlerChain.handleRequestUnsubscribe(uri);
 
-            if (!repository.containsLink(id, linkAfterCheck)) {
-                return new SendMessage(id, String.format("Ссылки %s нет", link));
-            } else {
-                repository.removeLink(id, linkAfterCheck);
-                return new SendMessage(id, String.format("Ссылка %s успешно удалена.", link));
-            }
-        } catch (Exception e) {
-            return new SendMessage(id, "Нужно еще ссылку добавить");
+        if (!repository.containsLink(id, link)) {
+            return new SendMessage(id, String.format("Ссылки %s нет в ваших подписках.", link));
+        } else {
+            repository.removeLink(id, link);
+            return new SendMessage(id, String.format("Ссылка %s успешно удалена.", link));
         }
     }
 

@@ -1,9 +1,9 @@
 package edu.java.bot.repository;
 
+import edu.java.bot.links.Link;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import edu.java.bot.utils.Link;
 import org.springframework.stereotype.Repository;
 
 @Repository

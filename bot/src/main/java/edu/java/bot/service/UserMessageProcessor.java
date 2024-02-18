@@ -7,14 +7,12 @@ import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
 public class UserMessageProcessor {
 
-    @Autowired
     private List<Command> commands;
     private final ChatRepository repository;
 
@@ -24,16 +22,22 @@ public class UserMessageProcessor {
 
         for (Command commandName : commands) {
             if (commandName.command().equals(commandFromChat)) {
-                if (!commandName.supports(update, repository)) {
-                    return new SendMessage(chatId, "Не поддерживается");
-                }
                 if (!commandName.isCorrect(update)) {
-                    return new SendMessage(chatId, "Не корректная");
+                    return new SendMessage(chatId, "Команда введена не корректно.");
                 }
+
+                if (!commandName.supports(update, repository)) {
+                    return new SendMessage(
+                        chatId,
+                        "Увы, но эта команда доступна только для зарегистрированных пользователей. "
+                            + "Пожалуйста, зарегистрируйтесь для доступа к ней."
+                    );
+                }
+
                 return commandName.handle(update);
             }
         }
-        return new SendMessage(chatId, "Неизвестная команда");
+        return new SendMessage(chatId, "Неизвестная команда.");
     }
 
 }

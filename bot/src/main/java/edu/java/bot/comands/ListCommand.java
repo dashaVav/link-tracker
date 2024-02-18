@@ -2,11 +2,11 @@ package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.links.Link;
 import edu.java.bot.repository.ChatRepository;
-import edu.java.bot.utils.Link;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -28,11 +28,6 @@ public class ListCommand implements Command {
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
 
-        if (!repository.isRegistered(id)) {
-            return new SendMessage(id, "Увы, но эта команда доступна только для зарегистрированных пользователей."
-                + " Пожалуйста, зарегистрируйтесь для доступа к ней.");
-        }
-
         List<Link> links = repository.getList(id);
         String result = links.isEmpty() ? "Список отслеживаемых ссылок пуст." : listOfLinks(links);
 
@@ -45,11 +40,9 @@ public class ListCommand implements Command {
     }
 
     private String listOfLinks(List<Link> links) {
-        int number = 1;
         StringBuilder list = new StringBuilder();
-
-        for (Link link: links) {
-            list.append(number).append(". ").append(link.getUri()).append("\n");
+        for (int i = 0; i < links.size(); i++) {
+            list.append(i + 1).append(". ").append(links.get(i).getUri()).append("\n");
         }
         return list.toString();
     }

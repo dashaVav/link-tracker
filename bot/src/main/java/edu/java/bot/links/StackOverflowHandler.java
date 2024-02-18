@@ -1,18 +1,25 @@
 package edu.java.bot.links;
 
-import edu.java.bot.utils.Link;
 import java.net.URI;
 
 public class StackOverflowHandler extends LinkHandler {
-    private final static String host = LinkInfo.STACKOVERFLOW.getHost();
+    private final static LinkInfo RESOURCE = LinkInfo.STACKOVERFLOW;
 
     @Override
-    public Link handleRequest(String url) {
-        if (url.contains(host)) {
-            System.out.println("Отслеживание обновлений на StackOverflow: " + url);
-            return new Link(URI.create(url), LinkInfo.STACKOVERFLOW, host);
+    public Link subscribe(URI uri) {
+        if (uri.getHost().equals(RESOURCE.getHost())) {
+            return new Link(LinkInfo.STACKOVERFLOW, uri, RESOURCE.getHost());
         } else {
-            return super.handleRequest(url);
+            return super.subscribe(uri);
+        }
+    }
+
+    @Override
+    public Link unsubscribe(URI uri) {
+        if (uri.getHost().equals(RESOURCE.getHost())) {
+            return new Link(LinkInfo.GITHUB, uri, RESOURCE.getHost());
+        } else {
+            return super.unsubscribe(uri);
         }
     }
 }

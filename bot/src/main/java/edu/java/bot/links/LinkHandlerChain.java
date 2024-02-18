@@ -1,6 +1,6 @@
 package edu.java.bot.links;
 
-import edu.java.bot.utils.Link;
+import java.net.URI;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +13,11 @@ public class LinkHandlerChain {
         firstHandler.setNextHandler(stackOverflowHandler);
     }
 
-    public Link handleRequest(String url) {
-        return firstHandler.handleRequest(url);
+    public Link handleRequestSubscribe(URI uri) {
+        return firstHandler.subscribe(uri);
     }
 
+    public Link handleRequestUnsubscribe(URI uri) {
+        return firstHandler.unsubscribe(uri);
+    }
 }

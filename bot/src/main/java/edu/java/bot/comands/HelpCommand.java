@@ -23,8 +23,8 @@ public class HelpCommand implements Command {
         long id = update.message().chat().id();
 
         StringBuilder helpMessage = new StringBuilder("Список доступных команд:\n");
-        for (CommandInfo commandInfo : CommandInfo.values()) {
-            helpMessage.append(commandInfo.getCommand()).append(" - ").append(commandInfo.getDescription())
+        for (CommandInfo command : CommandInfo.values()) {
+            helpMessage.append(command.getCommand()).append(" - ").append(command.getDescription())
                 .append("\n");
         }
         return new SendMessage(id, helpMessage.toString());
@@ -34,5 +34,4 @@ public class HelpCommand implements Command {
     public boolean isCorrect(Update update) {
         return update.message().text().equals(command());
     }
-
 }

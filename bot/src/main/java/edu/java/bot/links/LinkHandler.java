@@ -1,17 +1,21 @@
 package edu.java.bot.links;
 
-import edu.java.bot.utils.Link;
+import java.net.URI;
+import lombok.Setter;
 
-public abstract class LinkHandler {
+@Setter public abstract class LinkHandler {
     protected LinkHandler nextHandler;
 
-    public void setNextHandler(LinkHandler nextHandler) {
-        this.nextHandler = nextHandler;
+    public Link subscribe(URI uri) {
+        if (nextHandler != null) {
+            return nextHandler.subscribe(uri);
+        }
+        return null;
     }
 
-    public Link handleRequest(String url) {
+    public Link unsubscribe(URI uri) {
         if (nextHandler != null) {
-            nextHandler.handleRequest(url);
+            return nextHandler.subscribe(uri);
         }
         return null;
     }

@@ -13,5 +13,4 @@ public record GitHubDTO(
     @JsonProperty("pushed_at")
     OffsetDateTime pushedAt
 ) {
-
 }

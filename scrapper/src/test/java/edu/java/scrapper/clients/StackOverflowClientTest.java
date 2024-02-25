@@ -2,6 +2,7 @@ package edu.java.scrapper.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.clients.StackOverflowClient;
+import edu.java.clients.impl.StackOverflowClientImpl;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -35,7 +36,7 @@ public class StackOverflowClientTest {
 
     @Test
     public void testFetchRepo() {
-        StackOverflowClient stackOverflowClient = new StackOverflowClient(baseUrl);
+        StackOverflowClient stackOverflowClient = new StackOverflowClientImpl(baseUrl);
         long questionId = 12345;
         OffsetDateTime lastActivityDate = OffsetDateTime.now(ZoneOffset.ofHours(3));
         long answerCount = 5;
@@ -66,7 +67,7 @@ public class StackOverflowClientTest {
 
     @Test
     public void testFetchRepo_NotFound() {
-        StackOverflowClient stackOverflowClient = new StackOverflowClient(baseUrl);
+        StackOverflowClient stackOverflowClient = new StackOverflowClientImpl(baseUrl);
 
         long questionId = 1;
         stubFor(get(urlEqualTo("/questions/" + questionId + "?order=desc&sort=activity&site=stackoverflow"))

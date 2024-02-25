@@ -2,6 +2,8 @@ package edu.java.configuration;
 
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
+import edu.java.clients.impl.GitHubClientImpl;
+import edu.java.clients.impl.StackOverflowClientImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +18,11 @@ public class ClientConfiguration {
 
     @Bean
     public GitHubClient gitHubWebClient() {
-        return new GitHubClient(gitBaseUrl);
+        return new GitHubClientImpl(gitBaseUrl);
     }
 
     @Bean
     public StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClient(stackOverflowUrl);
+        return new StackOverflowClientImpl(stackOverflowUrl);
     }
 }

@@ -2,6 +2,7 @@ package edu.java.scrapper.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.clients.GitHubClient;
+import edu.java.clients.impl.GitHubClientImpl;
 import edu.java.dto.github.GitHubDTO;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterAll;
@@ -33,7 +34,7 @@ public class GitHubClientTest {
 
     @Test
     public void testFetchRepo() {
-        GitHubClient gitHubClient = new GitHubClient(baseUrl);
+        GitHubClient gitHubClient = new GitHubClientImpl(baseUrl);
 
         String owner = "testOwner";
         String repo = "testRepo";
@@ -61,7 +62,7 @@ public class GitHubClientTest {
 
     @Test
     public void testFetchRepo_NotFound() {
-        GitHubClient gitHubClient = new GitHubClient(baseUrl);
+        GitHubClient gitHubClient = new GitHubClientImpl(baseUrl);
 
         String owner = "testOwnerXXX";
         String repo = "testRepoXXX";

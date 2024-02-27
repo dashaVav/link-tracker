@@ -54,7 +54,7 @@ public class UntrackCommandTest {
     }
 
     @Test
-    public void testHandle_WithNonexistentLink() {
+    public void testHandleWithNonexistentLink() {
         when(update.message().text()).thenReturn("/untrack https://github.com/sanyarnd");
 
         URI uri = URI.create("https://github.com/sanyarnd");
@@ -62,7 +62,7 @@ public class UntrackCommandTest {
         when(linkHandlerChain.handleRequestUnsubscribe(uri)).thenReturn(mockLink);
         when(repository.containsLink(1L, mockLink)).thenReturn(false);
 
-        String expectedResponse = String.format("Ссылки %s нет в ваших подписках.", mockLink);
+        String expectedResponse = String.format("Ссылки %s нет в ваших подписках.", mockLink.getUri());
         String actualResponse = untrackCommand.handle(update);
 
         Assertions.assertEquals(expectedResponse, actualResponse);
@@ -70,7 +70,7 @@ public class UntrackCommandTest {
     }
 
     @Test
-    public void testIsCorrect_WithValidText() {
+    public void testIsCorrectWithValidText() {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         when(update.message()).thenReturn(message);

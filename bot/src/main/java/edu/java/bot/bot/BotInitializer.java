@@ -9,14 +9,12 @@ import edu.java.bot.comands.Command;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.service.UserMessageProcessor;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BotInitializer {
     public final TelegramBot bot;
 
-    @Autowired
     public BotInitializer(ApplicationConfig config, UserMessageProcessor userMessageProcessor, List<Command> commands) {
         bot = new TelegramBot(config.telegramToken());
         setMyCommands(commands);

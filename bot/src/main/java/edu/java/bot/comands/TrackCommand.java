@@ -7,9 +7,7 @@ import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
 import java.net.URI;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
 public class TrackCommand implements Command {
 

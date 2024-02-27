@@ -3,12 +3,9 @@ package edu.java.bot.comands;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,30 +27,30 @@ public class HelpCommandTest {
 
     @Test
     public void testCommand() {
-        assertEquals("/help", helpCommand.command());
+        Assertions.assertEquals("/help", helpCommand.command());
     }
 
     @Test
     public void testDescription() {
-        assertEquals(" вывести окно с командами", helpCommand.description());
+        Assertions.assertEquals(" вывести окно с командами", helpCommand.description());
     }
 
     @Test
     public void testHandle() {
         String sendMessage = helpCommand.handle(update);
 
-        assertNotNull(sendMessage);
+        Assertions.assertNotNull(sendMessage);
 
-        assertTrue(sendMessage.startsWith("Список доступных команд:"));
-        assertTrue(sendMessage.contains("/start - зарегистрировать пользователя"));
-        assertTrue(sendMessage.contains("/help -  вывести окно с командами"));
-        assertTrue(sendMessage.contains("/track - начать отслеживание ссылки"));
-        assertTrue(sendMessage.contains("/untrack - прекратить отслеживание ссылки"));
-        assertTrue(sendMessage.contains("/list - показать список отслеживаемых ссылок"));
+        Assertions.assertTrue(sendMessage.startsWith("Список доступных команд:"));
+        Assertions.assertTrue(sendMessage.contains("/start - зарегистрировать пользователя"));
+        Assertions.assertTrue(sendMessage.contains("/help -  вывести окно с командами"));
+        Assertions.assertTrue(sendMessage.contains("/track - начать отслеживание ссылки"));
+        Assertions.assertTrue(sendMessage.contains("/untrack - прекратить отслеживание ссылки"));
+        Assertions.assertTrue(sendMessage.contains("/list - показать список отслеживаемых ссылок"));
     }
 
     @Test
     public void testIsCorrect() {
-        assertTrue(helpCommand.isCorrect(update));
+        Assertions.assertTrue(helpCommand.isCorrect(update));
     }
 }

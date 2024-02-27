@@ -4,10 +4,10 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.links.Link;
 import edu.java.bot.repository.ChatRepository;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
 public class ListCommand implements Command {
     private final ChatRepository repository;
@@ -38,10 +38,8 @@ public class ListCommand implements Command {
     }
 
     private String listOfLinks(List<Link> links) {
-        StringBuilder list = new StringBuilder();
-        for (int i = 0; i < links.size(); i++) {
-            list.append(i + 1).append(". ").append(links.get(i).getUri()).append("\n");
-        }
-        return list.toString();
+        return IntStream.range(0, links.size())
+            .mapToObj(i -> (i + 1) + ". " + links.get(i).getUri())
+            .collect(Collectors.joining("\n"));
     }
 }

@@ -7,7 +7,7 @@ public class GitHubHandler extends LinkHandler {
 
     @Override
     public Link subscribe(URI uri) {
-        if (uri.getHost().equals(LINK_INFO.getHost())) {
+        if (LINK_INFO.getHost().equals(uri.getHost())) {
             return new Link(LinkInfo.GITHUB, uri, LINK_INFO.getHost());
         } else {
             return super.subscribe(uri);
@@ -16,7 +16,7 @@ public class GitHubHandler extends LinkHandler {
 
     @Override
     public Link unsubscribe(URI uri) {
-        if (uri.getHost().equals(LINK_INFO.getHost())) {
+        if (LINK_INFO.getHost().equals(uri.getHost())) {
             return new Link(LinkInfo.GITHUB, uri, LINK_INFO.getHost());
         } else {
             return super.unsubscribe(uri);

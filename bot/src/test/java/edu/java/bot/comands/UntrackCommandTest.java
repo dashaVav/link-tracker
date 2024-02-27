@@ -7,13 +7,10 @@ import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import java.net.URI;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.mock;
@@ -24,18 +21,19 @@ import static org.mockito.Mockito.when;
 public class UntrackCommandTest {
 
     @Mock
-    private ChatRepository mockRepository;
+    private ChatRepository repository;
 
     @Mock
-    private LinkHandlerChain mockLinkHandlerChain;
+    private LinkHandlerChain linkHandlerChain;
 
     private UntrackCommand untrackCommand;
     private Update update;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        untrackCommand = new UntrackCommand(mockRepository, mockLinkHandlerChain);
+        repository = mock(ChatRepository.class);
+        linkHandlerChain = mock(LinkHandlerChain.class);
+        untrackCommand = new UntrackCommand(repository, linkHandlerChain);
 
         update = mock(Update.class);
         Message message = mock(Message.class);
@@ -47,12 +45,12 @@ public class UntrackCommandTest {
 
     @Test
     public void testCommand() {
-        assertEquals("/untrack", untrackCommand.command());
+        Assertions.assertEquals("/untrack", untrackCommand.command());
     }
 
     @Test
     public void testDescription() {
-        assertEquals("прекратить отслеживание ссылки", untrackCommand.description());
+        Assertions.assertEquals("прекратить отслеживание ссылки", untrackCommand.description());
     }
 
     @Test
@@ -61,14 +59,14 @@ public class UntrackCommandTest {
 
         URI uri = URI.create("https://github.com/sanyarnd");
         Link mockLink = mock(Link.class);
-        when(mockLinkHandlerChain.handleRequestUnsubscribe(uri)).thenReturn(mockLink);
-        when(mockRepository.containsLink(1L, mockLink)).thenReturn(false);
+        when(linkHandlerChain.handleRequestUnsubscribe(uri)).thenReturn(mockLink);
+        when(repository.containsLink(1L, mockLink)).thenReturn(false);
 
         String expectedResponse = String.format("Ссылки %s нет в ваших подписках.", mockLink);
         String actualResponse = untrackCommand.handle(update);
 
-        assertEquals(expectedResponse, actualResponse);
-        verify(mockRepository, never()).removeLink(anyLong(), any(Link.class));
+        Assertions.assertEquals(expectedResponse, actualResponse);
+        verify(repository, never()).removeLink(anyLong(), any(Link.class));
     }
 
     @Test
@@ -78,7 +76,7 @@ public class UntrackCommandTest {
         when(update.message()).thenReturn(message);
         when(update.message().text()).thenReturn("/untrack https://example.com");
 
-        assertTrue(untrackCommand.isCorrect(update));
+        Assertions.assertTrue(untrackCommand.isCorrect(update));
     }
 
     @Test
@@ -88,6 +86,6 @@ public class UntrackCommandTest {
         when(update.message()).thenReturn(message);
         when(update.message().text()).thenReturn("/untrack");
 
-        assertFalse(untrackCommand.isCorrect(update));
+        Assertions.assertFalse(untrackCommand.isCorrect(update));
     }
 }

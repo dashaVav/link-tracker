@@ -3,9 +3,7 @@ package edu.java.bot.comands;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.repository.ChatRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
 public class StartCommand implements Command {
     private final ChatRepository repository;
@@ -38,6 +36,6 @@ public class StartCommand implements Command {
 
     @Override
     public boolean isCorrect(Update update) {
-        return update.message().text().equals(command());
+        return command().equals(update.message().text());
     }
 }

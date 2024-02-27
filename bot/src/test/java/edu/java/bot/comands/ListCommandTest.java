@@ -3,17 +3,15 @@ package edu.java.bot.comands;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.comands.ListCommand;
 import edu.java.bot.links.Link;
 import edu.java.bot.links.LinkInfo;
 import edu.java.bot.repository.ChatRepository;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +36,7 @@ public class ListCommandTest {
     @Test
     public void testHandleWithEmptyList() {
         String result = listCommand.handle(update);
-        assertEquals("Список отслеживаемых ссылок пуст.", result);
+        Assertions.assertEquals("Список отслеживаемых ссылок пуст.", result);
     }
 
     @Test
@@ -53,7 +51,7 @@ public class ListCommandTest {
 
         String result = listCommand.handle(update);
 
-        assertEquals("1. https://github.com/sanyarnd/tinkoff-java-course-2023/\n", result);
+        Assertions.assertEquals("1. https://github.com/sanyarnd/tinkoff-java-course-2023/", result);
     }
 
     @Test
@@ -62,7 +60,7 @@ public class ListCommandTest {
 
         boolean result = listCommand.isCorrect(update);
 
-        assertEquals(true, result);
+        Assertions.assertTrue(result);
     }
 
     @Test
@@ -71,16 +69,16 @@ public class ListCommandTest {
 
         boolean result = listCommand.isCorrect(update);
 
-        assertFalse(result);
+        Assertions.assertFalse(result);
     }
 
     @Test
     public void testCommand() {
-        assertEquals("/list", listCommand.command());
+        Assertions.assertEquals("/list", listCommand.command());
     }
 
     @Test
     public void testDescription() {
-        assertEquals("показать список отслеживаемых ссылок", listCommand.description());
+        Assertions.assertEquals("показать список отслеживаемых ссылок", listCommand.description());
     }
 }

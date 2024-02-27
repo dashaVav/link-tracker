@@ -7,9 +7,7 @@ import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
 import java.net.URI;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
 public class UntrackCommand implements Command {
     private final ChatRepository repository;
@@ -34,10 +32,10 @@ public class UntrackCommand implements Command {
         Link link = linkHandlerChain.handleRequestUnsubscribe(uri);
 
         if (!repository.containsLink(id, link)) {
-            return String.format("Ссылки %s нет в ваших подписках.", link);
+            return String.format("Ссылки %s нет в ваших подписках.", link.getUri());
         } else {
             repository.removeLink(id, link);
-            return String.format("Ссылка %s успешно удалена.", link);
+            return String.format("Ссылка %s успешно удалена.", link.getUri());
         }
     }
 

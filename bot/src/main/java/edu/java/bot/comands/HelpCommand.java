@@ -1,9 +1,9 @@
 package edu.java.bot.comands;
 
 import com.pengrad.telegrambot.model.Update;
-import org.springframework.stereotype.Component;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
-@Component
 public class HelpCommand implements Command {
     private final CommandInfo commandInfo = CommandInfo.HELP;
 
@@ -19,12 +19,9 @@ public class HelpCommand implements Command {
 
     @Override
     public String handle(Update update) {
-        StringBuilder helpMessage = new StringBuilder("Список доступных команд:\n");
-        for (CommandInfo command : CommandInfo.values()) {
-            helpMessage.append(command.getCommand()).append(" - ").append(command.getDescription())
-                .append("\n");
-        }
-        return helpMessage.toString();
+        return Arrays.stream(CommandInfo.values())
+            .map(command -> command.getCommand() + " - " + command.getDescription())
+            .collect(Collectors.joining("\n", "Список доступных команд:\n", "\n"));
     }
 
     @Override

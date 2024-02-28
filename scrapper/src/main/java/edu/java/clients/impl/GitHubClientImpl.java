@@ -8,14 +8,7 @@ public class GitHubClientImpl implements GitHubClient {
     private final WebClient webClient;
 
     public GitHubClientImpl(String baseUrl) {
-        String baseUrlDefault = "https://api.github.com";
-        if (!baseUrl.isEmpty()) {
-            baseUrlDefault = baseUrl;
-        }
-
-        webClient = WebClient.builder()
-            .baseUrl(baseUrlDefault)
-            .build();
+        webClient = WebClient.builder().baseUrl(baseUrl).build();
     }
 
     @Override

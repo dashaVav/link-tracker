@@ -10,19 +10,20 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ClientConfiguration {
-    @Value("${api.git-base-url}")
-    private String gitBaseUrl;
 
-    @Value("${api.stackoverflow-base-url}")
-    private String stackOverflowUrl;
+    @Value("${api.git-hub.base-url:${api.git-hub.default-url}}")
+    private String githubBaseUrl;
+
+    @Value("${api.stackoverflow.base-url:${api.stackoverflow.default-url}}")
+    private String stackoverflowBaseUrl;
 
     @Bean
     public GitHubClient gitHubWebClient() {
-        return new GitHubClientImpl(gitBaseUrl);
+        return new GitHubClientImpl(githubBaseUrl);
     }
 
     @Bean
     public StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClientImpl(stackOverflowUrl);
+        return new StackOverflowClientImpl(stackoverflowBaseUrl);
     }
 }

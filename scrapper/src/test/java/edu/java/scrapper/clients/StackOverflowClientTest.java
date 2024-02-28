@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertThrows;
 
@@ -24,7 +23,7 @@ public class StackOverflowClientTest {
 
     @BeforeAll
     public static void setUp() {
-        wireMockServer = new WireMockServer();
+        wireMockServer = new WireMockServer(3000);
         wireMockServer.start();
         baseUrl = "http://localhost:" + wireMockServer.port();
     }
@@ -70,7 +69,8 @@ public class StackOverflowClientTest {
         StackOverflowClient stackOverflowClient = new StackOverflowClientImpl(baseUrl);
 
         long questionId = 1;
-        stubFor(get(urlEqualTo("/questions/" + questionId + "?order=desc&sort=activity&site=stackoverflow"))
+        wireMockServer.stubFor(get(urlEqualTo(
+            "/questions/" + questionId + "?order=desc&sort=activity&site=stackoverflow"))
             .willReturn(aResponse()
                 .withStatus(404)));
 

@@ -16,5 +16,7 @@ logging:
   config: classpath:log4j2-plain.xml
 
 api:
-  git-base-url: https://api.github.com
-  stackoverflow-base-url: https://api.stackexchange.com/2.3
+  git-hub:
+    default-url: https://api.github.com
+  stackoverflow:
+    default-url: https://api.stackexchange.com/2.3

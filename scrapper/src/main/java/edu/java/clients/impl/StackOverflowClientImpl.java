@@ -8,14 +8,7 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     private final WebClient webClient;
 
     public StackOverflowClientImpl(String baseUrl) {
-        String baseUrlDefault = "https://api.stackexchange.com/2.3";
-        if (!baseUrl.isEmpty()) {
-            baseUrlDefault = baseUrl;
-        }
-
-        webClient = WebClient.builder()
-            .baseUrl(baseUrlDefault)
-            .build();
+        webClient = WebClient.builder().baseUrl(baseUrl).build();
     }
 
     @Override

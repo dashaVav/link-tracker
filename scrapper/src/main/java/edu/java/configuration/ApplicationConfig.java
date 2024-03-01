@@ -1,16 +1,14 @@
 package edu.java.configuration;
 
-import jakarta.validation.constraints.NotNull;
-import java.time.Duration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-@Validated
-@ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(
-    @NotNull
-    Scheduler scheduler
-) {
-    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+@Configuration
+@EnableScheduling
+public class ApplicationConfig {
+    @Bean
+    public ApplicationProperties.Scheduler scheduler(ApplicationProperties properties) {
+        return properties.scheduler();
     }
 }

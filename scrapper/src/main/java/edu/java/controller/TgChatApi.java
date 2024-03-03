@@ -66,7 +66,7 @@ public interface TgChatApi {
         value = "/tg-chat/{id}",
         produces = {"application/json"}
     )
-    ResponseEntity<Void> createChat(
+    ResponseEntity<Void> addChat(
         @Parameter(name = "id", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 

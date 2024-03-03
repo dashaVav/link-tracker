@@ -16,7 +16,7 @@ public class TgChatApiController implements TgChatApi {
     }
 
     @Override
-    public ResponseEntity<Void> createChat(Long id) {
+    public ResponseEntity<Void> addChat(Long id) {
         //todo create chat
         return new ResponseEntity<>(HttpStatus.OK);
     }

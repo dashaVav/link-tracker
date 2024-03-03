@@ -1,7 +1,7 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.dto.ApiErrorResponse;
-import edu.java.bot.dto.LinkUpdate;
+import edu.java.bot.dto.api.ApiErrorResponse;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +38,6 @@ public interface UpdatesApi {
         consumes = {"application/json"}
     )
     ResponseEntity<Void> sendUpdate(
-        @Parameter(name = "LinkUpdate", required = true) @Valid @RequestBody LinkUpdate linkUpdate
+        @Parameter(name = "LinkUpdate", required = true) @Valid @RequestBody LinkUpdateRequest linkUpdate
     );
 }

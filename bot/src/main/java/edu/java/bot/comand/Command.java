@@ -1,4 +1,4 @@
-package edu.java.bot.comands;
+package edu.java.bot.comand;
 
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;

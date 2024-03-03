@@ -1,7 +1,7 @@
-package edu.java.bot.comands;
+package edu.java.bot.comand;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.links.Link;
+import edu.java.bot.link.Link;
 import edu.java.bot.repository.ChatRepository;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package edu.java.bot.comands;
+package edu.java.bot.comand;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

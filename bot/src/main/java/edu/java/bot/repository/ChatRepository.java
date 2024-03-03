@@ -1,6 +1,6 @@
 package edu.java.bot.repository;
 
-import edu.java.bot.links.Link;
+import edu.java.bot.link.Link;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

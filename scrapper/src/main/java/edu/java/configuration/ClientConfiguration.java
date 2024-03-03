@@ -1,11 +1,11 @@
 package edu.java.configuration;
 
-import edu.java.clients.BotClient;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.StackOverflowClient;
-import edu.java.clients.impl.BotClientImpl;
-import edu.java.clients.impl.GitHubClientImpl;
-import edu.java.clients.impl.StackOverflowClientImpl;
+import edu.java.client.BotClient;
+import edu.java.client.GitHubClient;
+import edu.java.client.StackOverflowClient;
+import edu.java.client.impl.BotClientImpl;
+import edu.java.client.impl.GitHubClientImpl;
+import edu.java.client.impl.StackOverflowClientImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

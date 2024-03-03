@@ -1,6 +1,6 @@
-package edu.java.clients.impl;
+package edu.java.client.impl;
 
-import edu.java.clients.GitHubClient;
+import edu.java.client.GitHubClient;
 import edu.java.dto.github.GitHubDTO;
 import org.springframework.web.reactive.function.client.WebClient;
 

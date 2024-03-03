@@ -1,6 +1,6 @@
-package edu.java.clients.impl;
+package edu.java.client.impl;
 
-import edu.java.clients.StackOverflowClient;
+import edu.java.client.StackOverflowClient;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
 import org.springframework.web.reactive.function.client.WebClient;
 

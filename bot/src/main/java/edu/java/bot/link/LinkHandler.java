@@ -1,4 +1,4 @@
-package edu.java.bot.links;
+package edu.java.bot.link;
 
 import java.net.URI;
 import lombok.Setter;

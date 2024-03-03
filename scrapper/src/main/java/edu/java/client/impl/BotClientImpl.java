@@ -1,6 +1,6 @@
-package edu.java.clients.impl;
+package edu.java.client.impl;
 
-import edu.java.clients.BotClient;
+import edu.java.client.BotClient;
 import edu.java.dto.bot.LinkUpdateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.BodyInserters;

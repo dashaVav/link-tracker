@@ -3,6 +3,8 @@ package edu.java.bot.comands;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import edu.java.bot.comand.Command;
+import edu.java.bot.comand.StartCommand;
 import edu.java.bot.repository.ChatRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.client;
 
 import edu.java.dto.bot.LinkUpdateResponse;
 import org.springframework.http.ResponseEntity;

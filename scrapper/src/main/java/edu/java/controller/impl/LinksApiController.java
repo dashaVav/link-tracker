@@ -5,18 +5,19 @@ import edu.java.dto.api.request.AddLinkRequest;
 import edu.java.dto.api.request.RemoveLinkRequest;
 import edu.java.dto.api.response.LinkResponse;
 import edu.java.dto.api.response.ListLinksResponse;
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class LinksApiController implements LinksApi {
     private final static URI DEFAULT_LINK = URI.create("link");
     private final static Long DEFAULT_ID = 1L;
+
     @Override
     public ResponseEntity<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
         //todo remove links

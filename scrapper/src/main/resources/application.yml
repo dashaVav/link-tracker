@@ -20,3 +20,7 @@ api:
     default-url: https://api.github.com
   stackoverflow:
     default-url: https://api.stackexchange.com/2.3
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui

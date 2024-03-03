@@ -21,7 +21,7 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{@scheduler.interval}")
     public void update() {
-        LOGGER.info(gitHubClient.fetchRepo(OWNER_GITHUB_REPO, GITHUB_REPO));
-        LOGGER.info(stackOverflowClient.fetchQuestion(STACK_OVERFLOW_QUESTION_ID));
+//        LOGGER.info(gitHubClient.fetchRepo(OWNER_GITHUB_REPO, GITHUB_REPO));
+//        LOGGER.info(stackOverflowClient.fetchQuestion(STACK_OVERFLOW_QUESTION_ID));
     }
 }

@@ -4,8 +4,8 @@
         "title": "Bot API",
         "version": "1.0.0",
         "contact": {
-            "name": "Alexander Biryukov",
-            "url": "https://github.com"
+            "name": "bot",
+            "url": "http://localhost:8090"
         }
     },
     "paths": {

@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
+    interval: 30s
     force-check-delay: 10s
 
 
@@ -20,6 +20,8 @@ api:
     default-url: https://api.github.com
   stackoverflow:
     default-url: https://api.stackexchange.com/2.3
+  bot:
+    base-url: http://localhost:8090
 
 springdoc:
   swagger-ui:

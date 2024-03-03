@@ -37,7 +37,7 @@ public interface UpdatesApi {
         produces = {"application/json"},
         consumes = {"application/json"}
     )
-    ResponseEntity<Void> updatesPost(
+    ResponseEntity<Void> sendUpdate(
         @Parameter(name = "LinkUpdate", required = true) @Valid @RequestBody LinkUpdate linkUpdate
     );
 }

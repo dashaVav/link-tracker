@@ -1,8 +1,8 @@
 package edu.java.scrapper.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.clients.StackOverflowClient;
-import edu.java.clients.impl.StackOverflowClientImpl;
+import edu.java.client.StackOverflowClient;
+import edu.java.client.impl.StackOverflowClientImpl;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

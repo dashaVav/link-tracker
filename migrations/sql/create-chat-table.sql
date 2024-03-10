@@ -1,5 +1,4 @@
 --liquibase formatted sql
---changeset yourname:create-link-table
 
 CREATE TABLE IF NOT EXISTS chats
 (

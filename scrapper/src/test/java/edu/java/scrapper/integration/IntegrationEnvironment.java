@@ -11,8 +11,6 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.DirectoryResourceAccessor;
-import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
@@ -22,11 +20,10 @@ import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 public abstract class IntegrationEnvironment {
-    @ServiceConnection
+
     public static PostgreSQLContainer<?> POSTGRES;
 
-    @BeforeAll
-    static void setup() {
+    static {
         POSTGRES = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
             .withDatabaseName("scrapper")
             .withUsername("postgres")

@@ -3,7 +3,6 @@ package edu.java.service.jdbc;
 import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
-import edu.java.configuration.ClientConfiguration;
 import edu.java.domain.model.Link;
 import edu.java.domain.repositoty.LinksRepository;
 import edu.java.dto.bot.LinkUpdateResponse;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JdbcUpdater implements LinkUpdater {
     private final LinksRepository linkRepository;
-    private final ClientConfiguration clientConfig;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
@@ -33,9 +31,9 @@ public class JdbcUpdater implements LinkUpdater {
     public void update() {
         List<Link> linksToCheck = linkRepository.findLinksToCheck(LocalDateTime.now().minus(UPDATE_TIME));
         for (Link link : linksToCheck) {
-            if (link.getUrl().toString().contains(clientConfig.githubBaseUrl)) {
+            if (link.getUrl().toString().contains("github.com")) {
                 gitHibProcess(link);
-            } else if (link.getUrl().toString().contains(clientConfig.stackoverflowBaseUrl)) {
+            } else if (link.getUrl().toString().contains("stackoverflow.com")) {
                 stackOverflowProcess(link);
             }
             linkRepository.updateCheckAt(OffsetDateTime.now(), link.getId());

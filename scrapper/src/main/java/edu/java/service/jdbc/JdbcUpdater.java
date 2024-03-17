@@ -43,15 +43,17 @@ public class JdbcUpdater implements LinkUpdater {
     @SuppressWarnings("checkstyle:MagicNumber")
     private void gitHibProcess(Link link) {
         String[] parts = link.getUrl().toString().split("/");
-        GitHubDTO repo = gitHubClient.fetchRepo(parts[3], parts[4]);
-        if (repo != null && repo.pushedAt().isAfter(link.getCheckedAt())) {
-            botClient.sendUpdate(
-                new LinkUpdateResponse(
-                    link.getId(),
-                    link.getUrl(),
-                    MESSAGE,
-                    linkRepository.tgChatIdsByLinkId(link.getId())
-                ));
+        List<GitHubDTO> repo = gitHubClient.fetchRepo(parts[3], parts[4]);
+        for (GitHubDTO event: repo) {
+            if (event.createdAt().isAfter(link.getCheckedAt())) {
+                botClient.sendUpdate(
+                    new LinkUpdateResponse(
+                        link.getId(),
+                        link.getUrl(),
+                        String.format("Event %s by %s", event.type(), event.actor()),
+                        linkRepository.tgChatIdsByLinkId(link.getId())
+                    ));
+            }
         }
     }
 

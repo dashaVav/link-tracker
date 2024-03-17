@@ -2,6 +2,7 @@ package edu.java.client.impl;
 
 import edu.java.client.GitHubClient;
 import edu.java.dto.github.GitHubDTO;
+import java.util.List;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class GitHubClientImpl implements GitHubClient {
@@ -12,11 +13,12 @@ public class GitHubClientImpl implements GitHubClient {
     }
 
     @Override
-    public GitHubDTO fetchRepo(String owner, String repo) {
+    public List<GitHubDTO> fetchRepo(String owner, String repo) {
         return webClient.get()
-            .uri("/repos/{owner}/{repo}", owner, repo)
+            .uri("/repos/{owner}/{repo}/events", owner, repo)
             .retrieve()
-            .bodyToMono(GitHubDTO.class)
+            .bodyToFlux(GitHubDTO.class)
+            .collectList()
             .block();
     }
 }

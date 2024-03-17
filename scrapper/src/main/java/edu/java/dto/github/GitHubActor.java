@@ -2,7 +2,7 @@ package edu.java.dto.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record GitHubOwner(
+public record GitHubActor(
     @JsonProperty("login")
     String login,
 

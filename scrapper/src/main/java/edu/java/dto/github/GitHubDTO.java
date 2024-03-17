@@ -2,15 +2,33 @@ package edu.java.dto.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public record GitHubDTO(
-    @JsonProperty("owner")
-    GitHubOwner owner,
+    @JsonProperty("actor")
+    GitHubActor actor,
 
-    @JsonProperty("full_name")
-    String fullName,
+    @JsonProperty("type")
+    String type,
 
-    @JsonProperty("pushed_at")
-    OffsetDateTime pushedAt
+    @JsonProperty("repo")
+    GitHubRepo repo,
+
+    @JsonProperty("created_at")
+    OffsetDateTime createdAt,
+
+    @JsonProperty("payload")
+    Payload payload
+
 ) {
+    public record Payload(
+        @JsonProperty("commits")
+        List<Commits> commits
+    ) {
+        public record Commits(
+            @JsonProperty("message")
+            String message
+        ) {
+        }
+    }
 }

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class ClientConfiguration {
 
     @Value("${api.git-hub.base-url:${api.git-hub.default-url}}")
-    private String githubBaseUrl;
+    public String githubBaseUrl;
 
     @Bean
     public GitHubClient gitHubWebClient() {
@@ -22,7 +22,7 @@ public class ClientConfiguration {
     }
 
     @Value("${api.stackoverflow.base-url:${api.stackoverflow.default-url}}")
-    private String stackoverflowBaseUrl;
+    public String stackoverflowBaseUrl;
 
     @Bean
     public StackOverflowClient stackOverflowClient() {
@@ -30,7 +30,7 @@ public class ClientConfiguration {
     }
 
     @Value("${api.bot.base-url}")
-    private String botBaseUrl;
+    public String botBaseUrl;
 
     @Bean
     public BotClient botClient() {

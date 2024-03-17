@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 30s
+    interval: 10s
     force-check-delay: 10s
 
 spring:

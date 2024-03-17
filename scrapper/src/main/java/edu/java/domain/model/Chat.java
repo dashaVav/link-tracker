@@ -1,7 +1,13 @@
 package edu.java.domain.model;
 
-public record Chat(
-    long id,
-    String name
-) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Chat {
+    private long id;
+    private String name;
 }

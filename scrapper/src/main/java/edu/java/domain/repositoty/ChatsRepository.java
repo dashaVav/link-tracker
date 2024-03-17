@@ -16,14 +16,13 @@ public class ChatsRepository {
 
     @Transactional
     public void add(long tgChatId, String name) {
-        String sql = "insert into chats (id, name) values (?, ?)";
-        jdbcTemplate.update(sql, tgChatId, name);
+        jdbcTemplate.update("insert into chats (id, name) values (?, ?)", tgChatId, name);
     }
 
     @Transactional
     public void remove(long tgChatId) {
-        String sql = "delete from chats where id = ?";
-        jdbcTemplate.update(sql, tgChatId);
+        jdbcTemplate.update("delete from chats where id = ?", tgChatId);
+        jdbcTemplate.update("delete from links where id not in (select distinct linkId from link_chat)");
     }
 
     public Optional<Chat> findChatById(long tgChatId) {

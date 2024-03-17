@@ -4,10 +4,15 @@ app:
     interval: 30s
     force-check-delay: 10s
 
-
 spring:
   application:
     name: scrapper
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
 
 server:
   port: 8080

@@ -5,7 +5,8 @@ import edu.java.dto.api.request.AddLinkRequest;
 import edu.java.dto.api.request.RemoveLinkRequest;
 import edu.java.dto.api.response.LinkResponse;
 import edu.java.dto.api.response.ListLinksResponse;
-import java.net.URI;
+import edu.java.mapper.LinkMapper;
+import edu.java.service.LinkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,29 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class LinksApiController implements LinksApi {
-    private final static URI DEFAULT_LINK = URI.create("link");
-    private final static Long DEFAULT_ID = 1L;
+    private final LinkService jdbcLinkService;
+    private final LinkMapper linkMapper;
 
     @Override
     public ResponseEntity<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
-        //todo remove links
-        LinkResponse linkResponse = new LinkResponse(DEFAULT_ID, removeLinkRequest.link());
-        return new ResponseEntity<>(linkResponse, HttpStatus.OK);
+        return new ResponseEntity<>
+            (linkMapper.toDto(jdbcLinkService.remove(tgChatId, removeLinkRequest.link())), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ListLinksResponse> getLinks(Long tgChatId) {
-        //todo get links
-        LinkResponse linkResponse = new LinkResponse(DEFAULT_ID, DEFAULT_LINK);
-        List<LinkResponse> linkResponseList = List.of(linkResponse);
-        ListLinksResponse listLinksResponse = new ListLinksResponse(linkResponseList, 1);
-        return new ResponseEntity<>(listLinksResponse, HttpStatus.OK);
+        List<LinkResponse> linkResponses = linkMapper.toDtoList(jdbcLinkService.listAll(tgChatId));
+        return new ResponseEntity<>(new ListLinksResponse(linkResponses, linkResponses.size()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) {
-        //todo add link
-        LinkResponse linkResponse = new LinkResponse(DEFAULT_ID, addLinkRequest.link());
-        return new ResponseEntity<>(linkResponse, HttpStatus.OK);
+        return new ResponseEntity<>
+            (linkMapper.toDto(jdbcLinkService.add(tgChatId, addLinkRequest.link())), HttpStatus.OK);
     }
 }

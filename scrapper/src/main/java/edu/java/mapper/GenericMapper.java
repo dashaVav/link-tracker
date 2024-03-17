@@ -1,10 +1,10 @@
 package edu.java.mapper;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 @Component
 public abstract class GenericMapper<E, D> {

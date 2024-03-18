@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
-public class LinksRepository {
+public class JdbcLinksRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional

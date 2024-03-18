@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatsRepository {
+public class JdbcChatsRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional

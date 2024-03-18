@@ -16,7 +16,7 @@ public class JdbcChatsRepositoryTest extends IntegrationEnvironment {
     @Autowired
     private JdbcChatsRepository chatsRepository;
 
-    private static final Chat testChat = new Chat(1L, "Test Chat");
+    private static final Chat testChat = new Chat(11L, "Test Chat");
 
     @Test
     @Transactional

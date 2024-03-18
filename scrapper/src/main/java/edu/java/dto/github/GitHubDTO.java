@@ -21,13 +21,49 @@ public record GitHubDTO(
     Payload payload
 
 ) {
+    public record GitHubActor(
+        @JsonProperty("login")
+        String login
+    ) {
+    }
+
+    public record GitHubRepo(
+        @JsonProperty("url")
+        String url
+    ) {
+    }
+
     public record Payload(
         @JsonProperty("commits")
-        List<Commits> commits
+        List<Commits> commits,
+
+        @JsonProperty("ref")
+        String branchName,
+
+        @JsonProperty("action")
+        String action,
+
+        @JsonProperty("pull_request")
+        PullRequest pullRequest,
+
+        @JsonProperty("issue")
+        Issue issue
     ) {
         public record Commits(
             @JsonProperty("message")
             String message
+        ) {
+        }
+
+        public record PullRequest(
+            @JsonProperty("title")
+            String title
+        ) {
+        }
+
+        public record Issue(
+            @JsonProperty("title")
+            String title
         ) {
         }
     }

@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
 import edu.java.domain.model.Chat;
-import edu.java.domain.repositoty.ChatsRepository;
+import edu.java.domain.repositoty.JdbcChatsRepository;
 import edu.java.dto.api.request.AddChatRequest;
 import edu.java.exception.custom.ChatIdNotFoundException;
 import edu.java.exception.custom.ReRegistrationException;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JdbcTgChatService implements TgChatService {
-    private final ChatsRepository chatsRepository;
+    private final JdbcChatsRepository chatsRepository;
 
     @Override
     public void register(long tgChatId, AddChatRequest addChatRequest) {

@@ -4,7 +4,7 @@ import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.domain.model.Link;
-import edu.java.domain.repositoty.LinksRepository;
+import edu.java.domain.repositoty.JdbcLinksRepository;
 import edu.java.dto.bot.LinkUpdateResponse;
 import edu.java.dto.github.GitHubDTO;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JdbcUpdater implements LinkUpdater {
-    private final LinksRepository linkRepository;
+    private final JdbcLinksRepository linkRepository;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;

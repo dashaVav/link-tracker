@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
 import edu.java.domain.model.Link;
-import edu.java.domain.repositoty.LinksRepository;
+import edu.java.domain.repositoty.JdbcLinksRepository;
 import edu.java.exception.custom.LinkNotFoundException;
 import edu.java.exception.custom.ReAddingLinkException;
 import edu.java.service.LinkService;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
-    private final LinksRepository linksRepository;
+    private final JdbcLinksRepository linksRepository;
 
     private final TgChatService jdbcTgChatService;
 

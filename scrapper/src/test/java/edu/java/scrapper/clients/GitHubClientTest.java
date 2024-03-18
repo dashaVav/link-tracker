@@ -1,8 +1,8 @@
 package edu.java.scrapper.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.impl.GitHubClientImpl;
+import edu.java.client.GitHubClient;
+import edu.java.client.impl.GitHubClientImpl;
 import edu.java.dto.github.GitHubDTO;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterAll;

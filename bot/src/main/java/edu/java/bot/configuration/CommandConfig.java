@@ -1,11 +1,11 @@
 package edu.java.bot.configuration;
 
-import edu.java.bot.comands.HelpCommand;
-import edu.java.bot.comands.ListCommand;
-import edu.java.bot.comands.StartCommand;
-import edu.java.bot.comands.TrackCommand;
-import edu.java.bot.comands.UntrackCommand;
-import edu.java.bot.links.LinkHandlerChain;
+import edu.java.bot.comand.HelpCommand;
+import edu.java.bot.comand.ListCommand;
+import edu.java.bot.comand.StartCommand;
+import edu.java.bot.comand.TrackCommand;
+import edu.java.bot.comand.UntrackCommand;
+import edu.java.bot.link.LinkHandlerChain;
 import edu.java.bot.repository.ChatRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

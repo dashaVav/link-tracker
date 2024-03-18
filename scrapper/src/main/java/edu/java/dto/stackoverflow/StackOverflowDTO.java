@@ -11,15 +11,12 @@ public record StackOverflowDTO(List<Item> items) {
         StackOverflowOwner owner,
 
         @NotNull
-        @JsonProperty("last_activity_date")
-        OffsetDateTime lastActivityDate,
+        @JsonProperty("creation_date")
+        OffsetDateTime creationDate,
 
         @NotNull
         @JsonProperty("question_id")
-        Long questionId,
-
-        @JsonProperty("answer_count")
-        long answerCount
+        Long questionId
     ) {
     }
 }

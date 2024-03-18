@@ -4,10 +4,15 @@ app:
     interval: 10s
     force-check-delay: 10s
 
-
 spring:
   application:
     name: scrapper
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
 
 server:
   port: 8080
@@ -20,3 +25,9 @@ api:
     default-url: https://api.github.com
   stackoverflow:
     default-url: https://api.stackexchange.com/2.3
+  bot:
+    base-url: http://localhost:8090
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui

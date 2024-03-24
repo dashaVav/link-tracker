@@ -6,9 +6,19 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 server:
   port: 8090
 
 logging:
   config: classpath:log4j2-plain.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+api:
+  scrapper:
+    base-url: http://localhost:8080

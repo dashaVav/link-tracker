@@ -26,7 +26,7 @@ public class StartCommandTest {
     @BeforeEach
     public void setUp() {
         repository = mock(ChatRepository.class);
-        startCommand = new StartCommand(repository);
+//        startCommand = new StartCommand(repository);
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
         when(update.message()).thenReturn(message);

@@ -1,16 +1,17 @@
 package edu.java.bot.comand;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.link.Link;
-import edu.java.bot.repository.ChatRepository;
-import java.util.List;
+import edu.java.bot.client.ScrapperClient;
+import edu.java.bot.dto.scrapper.response.ListLinksResponse;
+import edu.java.bot.exception.api.ApiBadRequestException;
+import edu.java.bot.exception.api.ApiNotFoundException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ListCommand implements Command {
-    private final ChatRepository repository;
+    private final ScrapperClient client;
     private final CommandInfo commandInfo = CommandInfo.LIST;
 
     @Override
@@ -25,11 +26,16 @@ public class ListCommand implements Command {
 
     @Override
     public String handle(Update update) {
-        long id = update.message().chat().id();
-
-        List<Link> links = repository.getList(id);
-
-        return links.isEmpty() ? "Список отслеживаемых ссылок пуст." : listOfLinks(links);
+        String message;
+        try {
+            ListLinksResponse links = client.getLinks(update.message().chat().id()).getBody();
+            message = links.size() == 0 ? "Список отслеживаемых ссылок пуст." : listOfLinks(links);
+        } catch (ApiNotFoundException e) {
+            message = e.getApiErrorResponse().description();
+        } catch (ApiBadRequestException e) {
+            message = "Ошибка! Попробуйте позже!";
+        }
+        return message;
     }
 
     @Override
@@ -37,9 +43,9 @@ public class ListCommand implements Command {
         return update.message().text().equals(command());
     }
 
-    private String listOfLinks(List<Link> links) {
-        return IntStream.range(0, links.size())
-            .mapToObj(i -> (i + 1) + ". " + links.get(i).getUri())
+    private String listOfLinks(ListLinksResponse listLinksResponse) {
+        return IntStream.range(0, listLinksResponse.size())
+            .mapToObj(i -> (i + 1) + ". " + listLinksResponse.links().get(i).url())
             .collect(Collectors.joining("\n"));
     }
 }

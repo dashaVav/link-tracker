@@ -1,5 +1,6 @@
 package edu.java.bot.client;
 
+import edu.java.bot.dto.scrapper.request.AddChatRequest;
 import edu.java.bot.dto.scrapper.request.AddLinkRequest;
 import edu.java.bot.dto.scrapper.request.RemoveLinkRequest;
 import edu.java.bot.dto.scrapper.response.LinkResponse;
@@ -7,9 +8,9 @@ import edu.java.bot.dto.scrapper.response.ListLinksResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface ScrapperClient {
-    ResponseEntity<Void> removeChat(Long id);
+    void removeChat(Long id);
 
-    ResponseEntity<Void> addChat(Long id);
+    void addChat(Long id, AddChatRequest addChatRequest);
 
     ResponseEntity<LinkResponse> removeLink(Long id, RemoveLinkRequest removeLinkRequest);
 

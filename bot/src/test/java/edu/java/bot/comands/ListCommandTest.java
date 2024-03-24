@@ -25,7 +25,7 @@ public class ListCommandTest {
     @BeforeEach
     public void setUp() {
         repository = mock(ChatRepository.class);
-        listCommand = new ListCommand(repository);
+//        listCommand = new ListCommand(repository);
         Chat chat = mock(Chat.class);
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);

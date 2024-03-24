@@ -1,7 +1,7 @@
 package edu.java.bot.link;
 
-import java.net.URI;
 import edu.java.bot.client.ScrapperClient;
+import java.net.URI;
 import org.springframework.stereotype.Component;
 
 @Component

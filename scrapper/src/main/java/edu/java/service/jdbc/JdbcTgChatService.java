@@ -1,10 +1,10 @@
 package edu.java.service.jdbc;
 
-import edu.java.model.Chat;
 import edu.java.domain.repositoty.JdbcChatsRepository;
 import edu.java.dto.api.request.AddChatRequest;
 import edu.java.exception.custom.ChatIdNotFoundException;
 import edu.java.exception.custom.ReRegistrationException;
+import edu.java.model.Chat;
 import edu.java.service.TgChatService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

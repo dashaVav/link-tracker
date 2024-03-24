@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateProcessor {
     private final BotInitializer bot;
+
     public void handleUpdates(LinkUpdateRequest update) {
-        for(long id : update.tgChatIds()) {
+        for (long id : update.tgChatIds()) {
             bot.sendUpdate(new SendMessage(id, update.description() + "\n" + update.url()));
         }
     }

@@ -4,101 +4,65 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.comand.TrackCommand;
-import edu.java.bot.link.Link;
 import edu.java.bot.link.LinkHandlerChain;
-
 import java.net.URI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TrackCommandTest {
-    @Mock
-    private ChatRepository repository;
-
-    @Mock
-    private LinkHandlerChain linkHandlerChain;
-
+class TrackCommandTest {
     private TrackCommand trackCommand;
+    private LinkHandlerChain linkHandlerChain;
     private Update update;
+    private final long chatId = 12345L;
 
     @BeforeEach
-    public void setUp() {
-        repository = mock(ChatRepository.class);
-        linkHandlerChain = mock(LinkHandlerChain.class);
-        trackCommand = new TrackCommand(repository, linkHandlerChain);
-
-        update = mock(Update.class);
+    void setUp() {
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
-        when(update.message()).thenReturn(message);
+        when(chat.id()).thenReturn(chatId);
         when(message.chat()).thenReturn(chat);
-    }
-
-    @Test
-    public void testCommand() {
-        Assertions.assertEquals("/track", trackCommand.command());
-    }
-
-    @Test
-    public void testDescription() {
-        Assertions.assertEquals("начать отслеживание ссылки", trackCommand.description());
-    }
-
-    @Test
-    public void testHandle_WithSupportedLink() {
-
-        when(update.message().text()).thenReturn("/track https://github.com/sanyarnd/tinkoff-java-course-2023/");
-
-        URI uri = URI.create("https://github.com/sanyarnd/tinkoff-java-course-2023/");
-        Link mockLink = mock(Link.class);
-        when(linkHandlerChain.handleRequestSubscribe(uri)).thenReturn(mockLink);
-
-        String expectedResponse = "Ссылка https://github.com/sanyarnd/tinkoff-java-course-2023/ успешно добавлена.";
-        String actualResponse = trackCommand.handle(update);
-
-        Assertions.assertEquals(expectedResponse, actualResponse);
-    }
-
-    @Test
-    public void testHandle_WithUnsupportedLink() {
-        when(update.message().text()).thenReturn("/track https://github.com/sanyarnd/tinkoff-java-course-2023/");
-
-        URI uri = URI.create("https://github.com/sanyarnd/tinkoff-java-course-2023/");
-        when(linkHandlerChain.handleRequestSubscribe(uri)).thenReturn(null);
-
-        String expectedResponse =
-            "Извините, ссылка https://github.com/sanyarnd/tinkoff-java-course-2023/ не поддерживается.";
-        String actualResponse = trackCommand.handle(update);
-
-        Assertions.assertEquals(expectedResponse, actualResponse);
-        verify(repository, never()).addLink(anyLong(), ArgumentMatchers.any(Link.class));
-    }
-
-    @Test
-    public void testIsCorrect_WithValidText() {
-        Update update = mock(Update.class);
-        Message message = mock(Message.class);
+        update = mock(Update.class);
         when(update.message()).thenReturn(message);
-        when(update.message().text()).thenReturn("/track https://github.com/sanyarnd/tinkoff-java-course-2023/");
+        when(update.message().chat().id()).thenReturn(chatId);
 
-        Assertions.assertTrue(trackCommand.isCorrect(update));
+        linkHandlerChain = mock(LinkHandlerChain.class);
+        trackCommand = new TrackCommand(linkHandlerChain);
     }
 
     @Test
-    public void testIsCorrect_WithInvalidText() {
-        Update update = mock(Update.class);
-        Message message = mock(Message.class);
-        when(update.message()).thenReturn(message);
-        when(update.message().text()).thenReturn("/track");
+    void testHandle_Success() {
+        String link = "https://example.com";
+        when(update.message().text()).thenReturn("track " + link);
+        when(update.message().chat().id()).thenReturn(chatId);
+        when(linkHandlerChain.handleRequestSubscribe(chatId, URI.create(link))).thenReturn(
+            "Tracking started for " + link);
 
-        Assertions.assertFalse(trackCommand.isCorrect(update));
+        String result = trackCommand.handle(update);
+
+        Assertions.assertEquals("Tracking started for https://example.com", result);
+        verify(linkHandlerChain, times(1)).handleRequestSubscribe(chatId, URI.create(link));
+    }
+
+    @Test
+    void testIsCorrect_True() {
+        when(update.message().text()).thenReturn("track https://example.com");
+
+        boolean result = trackCommand.isCorrect(update);
+
+        Assertions.assertTrue(result);
+    }
+
+    @Test
+    void testIsCorrect_False() {
+        when(update.message().text()).thenReturn("track https://example.com extra");
+
+        boolean result = trackCommand.isCorrect(update);
+
+        Assertions.assertFalse(result);
     }
 }

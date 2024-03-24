@@ -36,10 +36,14 @@ public class GitHubClientImpl implements GitHubClient {
             case "IssuesEvent" -> {
                 if (event.payload().action().equals(OPENED)) {
                     message =
-                        String.format("%s открыл(а) тикет \"%s\"", event.actor().login(), event.payload().issue().title());
+                        String.format("%s открыл(а) тикет \"%s\"",
+                            event.actor().login(), event.payload().issue().title()
+                        );
                 } else {
                     message =
-                        String.format("%s закрыл(а) тикет \"%s\"", event.actor().login(), event.payload().issue().title());
+                        String.format("%s закрыл(а) тикет \"%s\"",
+                            event.actor().login(), event.payload().issue().title()
+                        );
                 }
             }
             case "PullRequestEvent" -> {

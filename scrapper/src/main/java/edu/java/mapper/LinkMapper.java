@@ -1,7 +1,7 @@
 package edu.java.mapper;
 
-import edu.java.model.Link;
 import edu.java.dto.api.response.LinkResponse;
+import edu.java.model.Link;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

@@ -10,6 +10,7 @@ import java.net.URI;
 
 public class GitHubHandler extends LinkHandler {
     private final static LinkInfo LINK_INFO = LinkInfo.GITHUB;
+    private final static String ERROR_MESSAGE = "Ошибка! Попробуйте позже!";
 
     GitHubHandler(ScrapperClient client) {
         super(client);
@@ -28,7 +29,7 @@ public class GitHubHandler extends LinkHandler {
             } catch (ApiReAddingException | ApiNotFoundException e) {
                 message = e.getApiErrorResponse().description();
             } catch (ApiBadRequestException e) {
-                message = "Ошибка! Попробуйте позже!";
+                message = ERROR_MESSAGE;
             }
 
             return message;
@@ -50,7 +51,7 @@ public class GitHubHandler extends LinkHandler {
             } catch (ApiNotFoundException e) {
                 message = e.getApiErrorResponse().description();
             } catch (ApiBadRequestException e) {
-                message = "Ошибка! Попробуйте позже!";
+                message = ERROR_MESSAGE;
             }
 
             return message;

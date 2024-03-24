@@ -15,7 +15,6 @@ public class UserMessageProcessor {
     private List<Command> commands;
 
     public SendMessage handleUpdate(Update update) {
-        System.out.println("+");
         Long chatId = update.message().chat().id();
         String commandFromChat = CommandUtils.getCommand(update.message().text());
 

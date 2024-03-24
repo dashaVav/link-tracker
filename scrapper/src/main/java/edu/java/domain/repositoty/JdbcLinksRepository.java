@@ -1,6 +1,6 @@
 package edu.java.domain.repositoty;
 
-import edu.java.domain.model.Link;
+import edu.java.model.Link;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;

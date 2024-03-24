@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.domain.model.Link;
+import edu.java.model.Link;
 import java.net.URI;
 import java.util.List;
 

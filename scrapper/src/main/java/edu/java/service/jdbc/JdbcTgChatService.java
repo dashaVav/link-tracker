@@ -1,6 +1,6 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.model.Chat;
+import edu.java.model.Chat;
 import edu.java.domain.repositoty.JdbcChatsRepository;
 import edu.java.dto.api.request.AddChatRequest;
 import edu.java.exception.custom.ChatIdNotFoundException;

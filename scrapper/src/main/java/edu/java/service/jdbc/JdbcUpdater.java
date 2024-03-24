@@ -3,7 +3,7 @@ package edu.java.service.jdbc;
 import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
-import edu.java.domain.model.Link;
+import edu.java.model.Link;
 import edu.java.domain.repositoty.JdbcLinksRepository;
 import edu.java.dto.bot.LinkUpdateResponse;
 import edu.java.dto.github.GitHubDTO;

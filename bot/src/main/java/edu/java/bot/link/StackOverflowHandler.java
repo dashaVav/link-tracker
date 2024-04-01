@@ -6,6 +6,7 @@ import edu.java.bot.dto.scrapper.request.RemoveLinkRequest;
 import edu.java.bot.exception.api.ApiBadRequestException;
 import edu.java.bot.exception.api.ApiNotFoundException;
 import edu.java.bot.exception.api.ApiReAddingException;
+import edu.java.bot.exception.api.ResourceUnavailableException;
 import java.net.URI;
 
 public class StackOverflowHandler extends LinkHandler {
@@ -28,7 +29,7 @@ public class StackOverflowHandler extends LinkHandler {
                 );
             } catch (ApiReAddingException | ApiNotFoundException e) {
                 message = e.getApiErrorResponse().description();
-            } catch (ApiBadRequestException e) {
+            } catch (ApiBadRequestException | ResourceUnavailableException e) {
                 message = ERROR_MESSAGE;
             }
 
@@ -50,7 +51,7 @@ public class StackOverflowHandler extends LinkHandler {
                 );
             } catch (ApiNotFoundException e) {
                 message = e.getApiErrorResponse().description();
-            } catch (ApiBadRequestException e) {
+            } catch (ApiBadRequestException | ResourceUnavailableException e) {
                 message = ERROR_MESSAGE;
             }
 

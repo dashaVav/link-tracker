@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.exception.api.ApiBadRequestException;
 import edu.java.bot.exception.api.ApiNotFoundException;
+import edu.java.bot.exception.api.ResourceUnavailableException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class EndCommand implements Command {
             message = "Работа с ботом успешно завершена!";
         } catch (ApiNotFoundException e) {
             message = e.getApiErrorResponse().description();
-        } catch (ApiBadRequestException e) {
+        } catch (ApiBadRequestException | ResourceUnavailableException e) {
             message = "Ошибка! Попробуйте позже!";
         }
         return message;

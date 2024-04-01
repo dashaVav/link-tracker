@@ -13,6 +13,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +24,7 @@ public class JdbcUpdater implements LinkUpdater {
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final Duration UPDATE_TIME = Duration.ofSeconds(1);
 
@@ -46,6 +49,7 @@ public class JdbcUpdater implements LinkUpdater {
         try {
             repo = gitHubClient.fetchRepo(parts[3], parts[4]);
         } catch (Exception e) {
+            LOGGER.warn(e);
             return;
         }
 
@@ -74,6 +78,7 @@ public class JdbcUpdater implements LinkUpdater {
         try {
             answers = stackOverflowClient.fetchAnswersByQuestionId(questionId);
         } catch (Exception e) {
+            LOGGER.warn(e);
             return;
         }
 

@@ -1,16 +1,22 @@
 package edu.java.client.impl;
 
 import edu.java.client.GitHubClient;
+import edu.java.configuration.retry.RetryProperties;
 import edu.java.dto.github.GitHubDTO;
+import edu.java.exception.custom.ResourceUnavailableException;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class GitHubClientImpl implements GitHubClient {
     private final WebClient webClient;
     private final static String OPENED = "opened";
+    private final RetryProperties retryProperties;
 
-    public GitHubClientImpl(String baseUrl) {
+    public GitHubClientImpl(String baseUrl, RetryProperties retryProperties) {
         webClient = WebClient.builder().baseUrl(baseUrl).build();
+        this.retryProperties = retryProperties;
     }
 
     @Override
@@ -18,8 +24,16 @@ public class GitHubClientImpl implements GitHubClient {
         return webClient.get()
             .uri("/repos/{owner}/{repo}/events", owner, repo)
             .retrieve()
+            .onStatus(
+                code -> retryProperties.getStatusCode().contains(code),
+                response -> Mono.error(new ResourceUnavailableException(
+                    "Try later",
+                    (HttpStatus) response.statusCode()
+                ))
+            )
             .bodyToFlux(GitHubDTO.class)
             .collectList()
+            .retryWhen(retryProperties.getRetry())
             .block();
     }
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DlqTopicConfig {
 
-    @Value("${dlq-topic}")
+    @Value("${spring.kafka.dlq-topic}")
     private String dqlTopic;
 
     @Bean

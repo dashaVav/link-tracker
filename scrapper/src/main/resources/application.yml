@@ -19,6 +19,10 @@ spring:
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
   kafka:
+    consumer:
+      properties:
+        session.timeout.ms: 30000
+        max.poll.interval.ms: 300000
     topic: updates
     bootstrap-servers: localhost:29091
     use-queue: true

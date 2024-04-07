@@ -12,11 +12,15 @@ public class MessagesKafkaListener {
     private final UpdateProcessor updateProcessor;
     private final DlqProducer dlqProducer;
 
-    @KafkaListener(topics = "${topic}",
-                   groupId = "${group-id}",
+    @KafkaListener(topics = "${spring.kafka.topic}",
+                   groupId = "${spring.kafka.group-id}",
                    containerFactory = "factory")
     public void listenStringMessages(@Payload LinkUpdateResponse updates) {
-        updateProcessor.handleUpdates(updates);
+        try {
+            updateProcessor.handleUpdates(updates);
+        } catch (Exception e) {
+            dlqProducer.send(updates);
+        }
     }
 }
 

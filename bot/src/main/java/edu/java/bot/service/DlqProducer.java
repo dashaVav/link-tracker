@@ -12,7 +12,7 @@ public class DlqProducer {
 
     private final KafkaTemplate<Long, LinkUpdateResponse> kafkaProducer;
 
-    @Value("${dlq-topic}")
+    @Value("${spring.kafka.dlq-topic}")
     private String topic;
 
     public void send(LinkUpdateResponse update) {

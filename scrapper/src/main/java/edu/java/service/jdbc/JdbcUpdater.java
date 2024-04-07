@@ -53,7 +53,7 @@ public class JdbcUpdater implements LinkUpdater {
             return;
         }
 
-        for (GitHubDTO event : repo) {
+        for (GitHubDTO event : repo.reversed()) {
             if (event.createdAt().isAfter(link.getCheckedAt())) {
                 String message = gitHubClient.getMessage(event);
                 if (!message.isEmpty()) {
@@ -65,8 +65,6 @@ public class JdbcUpdater implements LinkUpdater {
                     );
                     notificationService.sendNotification(linkUpdateResponse);
                 }
-            } else {
-                break;
             }
         }
     }
@@ -82,7 +80,7 @@ public class JdbcUpdater implements LinkUpdater {
             return;
         }
 
-        for (StackOverflowDTO.Item event : answers.items()) {
+        for (StackOverflowDTO.Item event : answers.items().reversed()) {
             if (event.creationDate().isAfter(link.getCheckedAt())) {
                 String message = stackOverflowClient.getMessage(event);
                 if (!message.isEmpty()) {
@@ -94,8 +92,6 @@ public class JdbcUpdater implements LinkUpdater {
                     );
                     notificationService.sendNotification(linkUpdateResponse);
                 }
-            } else {
-                break;
             }
         }
     }

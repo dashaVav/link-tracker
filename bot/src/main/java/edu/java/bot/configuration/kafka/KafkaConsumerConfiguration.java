@@ -1,6 +1,6 @@
 package edu.java.bot.configuration.kafka;
 
-import edu.java.bot.dto.api.LinkUpdateRequest;
+import edu.java.bot.dto.api.LinkUpdateResponse;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -22,26 +22,31 @@ public class KafkaConsumerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.group-id}")
-    private String groupId;
+    @Value("${trusted-packages}")
+    private String trustedPackages;
 
     private Map<String, Object> consumerConfig() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(JsonDeserializer.TRUSTED_PACKAGES, trustedPackages);
+        properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, LinkUpdateResponse.class);
+
         return properties;
     }
 
-    private ConsumerFactory<Long, LinkUpdateRequest> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfig());
+    private ConsumerFactory<Long, LinkUpdateResponse> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(
+            consumerConfig(),
+            new LongDeserializer(),
+            new JsonDeserializer<>(LinkUpdateResponse.class, false)
+        );
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Long, LinkUpdateRequest>> factory() {
-        ConcurrentKafkaListenerContainerFactory<Long, LinkUpdateRequest> factory
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Long, LinkUpdateResponse>> factory() {
+        ConcurrentKafkaListenerContainerFactory<Long, LinkUpdateResponse> factory
             = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

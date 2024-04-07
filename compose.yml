@@ -42,44 +42,6 @@ services:
     networks:
       - backend
 
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    hostname: kafka
-#    container_name: kafka
-#    ports:
-#      - "29091:29091"
-#    environment:
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9091,PLAINTEXT_HOST://localhost:29091
-#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9091,PLAINTEXT_HOST://0.0.0.0:29091
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_BROKER_ID: 1
-#      BOOTSTRAP_SERVERS: kafka1:9091
-#      ZOOKEEPER: zookeeper:2181
-#    volumes:
-#      - kafka_data:/var/lib/kafka
-#    networks:
-#      - backend
-#    depends_on:
-#      - zookeeper
-#
-#  init-kafka:
-#    image: confluentinc/cp-kafka:latest
-#    depends_on:
-#      - kafka
-#    entrypoint: [ '/bin/sh', '-c' ]
-#    command: |
-#      "
-#      kafka-topics --bootstrap-server kafka:29091 --list
-#
-#      echo -e 'Creating kafka topics'
-#      kafka-topics --bootstrap-server kafka:29091 --create --if-not-exists --topic updates
-#
-#      echo -e 'Successfully created the following topics:'
-#      kafka-topics --bootstrap-server kafka:29091 --list
-#      "
-#
-
   kafka:
     image: confluentinc/cp-kafka:7.2.1
     hostname: kafka
@@ -101,25 +63,6 @@ services:
       - zookeeper
     networks:
       - backend
-
-#  init-kafka:
-#    image: confluentinc/cp-kafka:7.2.1
-#    depends_on:
-#      - kafka
-#    entrypoint: [ '/bin/sh', '-c' ]
-#    command: |
-#      "
-#      # blocks until kafka is reachable
-#      kafka-topics --bootstrap-server kafka1:9091 --list
-#
-#      echo -e 'Creating kafka topics'
-#      kafka-topics --bootstrap-server kafka1:9091 --create --if-not-exists --topic updates
-#
-#      echo -e 'Successfully created the following topics:'
-#      kafka-topics --bootstrap-server kafka1:9091 --list
-#      "
-#    networks:
-#      - backend
 
 volumes:
   postgresql: { }

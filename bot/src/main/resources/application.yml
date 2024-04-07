@@ -14,9 +14,16 @@ spring:
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
   kafka:
-    topic: updates
-    group-id: updates1
     bootstrap-servers: localhost:29091
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
+#    type-mappings: edu.java.dto.bot.LinkUpdateResponse:edu.java.bot.dto.LinkUpdateResponse
+trusted-packages: "*"
+
+dlq-topic: dql-topic
+topic: updates
+group-id: updates1
 
 bucket4j:
   enabled: true

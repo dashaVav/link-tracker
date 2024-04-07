@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 60s
+    interval: 1h
     force-check-delay: 10s
 
 spring:
@@ -18,6 +18,10 @@ spring:
       - rate-limit-buckets-scrapper
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
+  kafka:
+    topic: updates
+    bootstrap-servers: localhost:29091
+    use-queue: true
 
 bucket4j:
   enabled: true
@@ -52,7 +56,7 @@ springdoc:
     path: /swagger-ui
 
 retry:
-  max-attempts: 10
+  max-attempts: 1
   strategy: const # const, exp
   delay: 10000
   status-code: INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS, BAD_GATEWAY, GATEWAY_TIMEOUT, SERVICE_UNAVAILABLE, FORBIDDEN

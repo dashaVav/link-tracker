@@ -13,3 +13,4 @@ public record LinkUpdateResponse(
     @NotEmpty List<Long> tgChatIds
 ) {
 }
+

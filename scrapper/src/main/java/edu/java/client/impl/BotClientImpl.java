@@ -6,13 +6,13 @@ import edu.java.dto.api.response.ApiErrorResponse;
 import edu.java.dto.bot.LinkUpdateResponse;
 import edu.java.exception.api.ApiBadRequestException;
 import edu.java.exception.custom.ResourceUnavailableException;
+import edu.java.service.scheduler.NotificationService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-public class BotClientImpl implements BotClient {
+public class BotClientImpl implements BotClient, NotificationService {
     private final WebClient webClient;
     private final RetryProperties retryProperties;
 
@@ -22,8 +22,8 @@ public class BotClientImpl implements BotClient {
     }
 
     @Override
-    public ResponseEntity<Void> sendUpdate(LinkUpdateResponse linkUpdateRequest) {
-        return webClient.post()
+    public void sendUpdate(LinkUpdateResponse linkUpdateRequest) {
+        webClient.post()
             .uri("/updates")
             .body(BodyInserters.fromValue(linkUpdateRequest))
             .retrieve()
@@ -41,5 +41,10 @@ public class BotClientImpl implements BotClient {
             .toEntity(Void.class)
             .retryWhen(retryProperties.getRetry())
             .block();
+    }
+
+    @Override
+    public void sendNotification(LinkUpdateResponse update) {
+        sendUpdate(update);
     }
 }

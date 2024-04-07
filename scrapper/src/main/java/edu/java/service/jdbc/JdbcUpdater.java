@@ -1,6 +1,5 @@
 package edu.java.service.jdbc;
 
-import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.domain.repositoty.JdbcLinksRepository;
@@ -9,6 +8,7 @@ import edu.java.dto.github.GitHubDTO;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
 import edu.java.model.Link;
 import edu.java.service.LinkUpdater;
+import edu.java.service.scheduler.NotificationService;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ public class JdbcUpdater implements LinkUpdater {
     private final JdbcLinksRepository linkRepository;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
-    private final BotClient botClient;
+    private final NotificationService notificationService;
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final Duration UPDATE_TIME = Duration.ofSeconds(1);
@@ -57,13 +57,13 @@ public class JdbcUpdater implements LinkUpdater {
             if (event.createdAt().isAfter(link.getCheckedAt())) {
                 String message = gitHubClient.getMessage(event);
                 if (!message.isEmpty()) {
-                    botClient.sendUpdate(
-                        new LinkUpdateResponse(
-                            link.getId(),
-                            link.getUrl(),
-                            message,
-                            linkRepository.tgChatIdsByLinkId(link.getId())
-                        ));
+                    LinkUpdateResponse linkUpdateResponse = new LinkUpdateResponse(
+                        link.getId(),
+                        link.getUrl(),
+                        message,
+                        linkRepository.tgChatIdsByLinkId(link.getId())
+                    );
+                    notificationService.sendNotification(linkUpdateResponse);
                 }
             } else {
                 break;
@@ -86,13 +86,13 @@ public class JdbcUpdater implements LinkUpdater {
             if (event.creationDate().isAfter(link.getCheckedAt())) {
                 String message = stackOverflowClient.getMessage(event);
                 if (!message.isEmpty()) {
-                    botClient.sendUpdate(
-                        new LinkUpdateResponse(
-                            link.getId(),
-                            link.getUrl(),
-                            stackOverflowClient.getMessage(event),
-                            linkRepository.tgChatIdsByLinkId(link.getId())
-                        ));
+                    LinkUpdateResponse linkUpdateResponse = new LinkUpdateResponse(
+                        link.getId(),
+                        link.getUrl(),
+                        stackOverflowClient.getMessage(event),
+                        linkRepository.tgChatIdsByLinkId(link.getId())
+                    );
+                    notificationService.sendNotification(linkUpdateResponse);
                 }
             } else {
                 break;

@@ -62,6 +62,8 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+    processed-updates:
+      name: processed_updates_count
 
   endpoints:
     web:

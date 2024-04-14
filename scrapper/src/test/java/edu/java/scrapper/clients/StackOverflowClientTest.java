@@ -34,7 +34,7 @@ public class StackOverflowClientTest {
 
     @BeforeAll
     public static void setUp() {
-        wireMockServer = new WireMockServer(3000);
+        wireMockServer = new WireMockServer(3001);
         wireMockServer.start();
         baseUrl = "http://localhost:" + wireMockServer.port();
 

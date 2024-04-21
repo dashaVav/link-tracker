@@ -1,12 +1,13 @@
-package edu.java.service.jdbc;
+package edu.java.service.jpa;
 
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
-import edu.java.domain.repositoty.JdbcLinksRepository;
 import edu.java.dto.bot.LinkUpdateResponse;
 import edu.java.dto.github.GitHubDTO;
 import edu.java.dto.stackoverflow.StackOverflowDTO;
+import edu.java.model.Chat;
 import edu.java.model.Link;
+import edu.java.repositoty.jpa.JpaLinkRepository;
 import edu.java.service.LinkUpdater;
 import edu.java.service.scheduler.NotificationService;
 import io.micrometer.core.instrument.Counter;
@@ -16,19 +17,17 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
-public class JdbcUpdater implements LinkUpdater {
-    private final JdbcLinksRepository linkRepository;
+public class JpaLinkUpdater implements LinkUpdater {
+    private final JpaLinkRepository linkRepository;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final NotificationService notificationService;
     private final Counter processedUpdatesCounter;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final Duration UPDATE_TIME = Duration.ofSeconds(1);
+    private static final Duration UPDATE_TIME = Duration.ofHours(1);
 
     @Override
     public void update() {
@@ -40,7 +39,7 @@ public class JdbcUpdater implements LinkUpdater {
             } else if (link.getUrl().toString().contains("stackoverflow.com")) {
                 stackOverflowProcess(link);
             }
-            linkRepository.updateCheckAt(time, link.getId());
+            linkRepository.updateCheckedAtById(link.getId(), time);
         }
     }
 
@@ -56,14 +55,14 @@ public class JdbcUpdater implements LinkUpdater {
         }
 
         for (GitHubDTO event : repo.reversed()) {
-            if (event.createdAt().isAfter(link.getCheckedAt())) {
+            if (event.createdAt() != null && event.createdAt().isAfter(link.getCheckedAt())) {
                 String message = gitHubClient.getMessage(event);
                 if (!message.isEmpty()) {
                     LinkUpdateResponse linkUpdateResponse = new LinkUpdateResponse(
                         link.getId(),
                         link.getUrl(),
                         message,
-                        linkRepository.tgChatIdsByLinkId(link.getId())
+                        linkRepository.findChatIdsForLink(link.getId())
                     );
                     notificationService.sendNotification(linkUpdateResponse);
                     processedUpdatesCounter.increment();
@@ -91,7 +90,8 @@ public class JdbcUpdater implements LinkUpdater {
                         link.getId(),
                         link.getUrl(),
                         stackOverflowClient.getMessage(event),
-                        linkRepository.tgChatIdsByLinkId(link.getId())
+                        linkRepository.findById(link.getId()).get()
+                            .getChats().stream().map(Chat::getId).toList()
                     );
                     notificationService.sendNotification(linkUpdateResponse);
                     processedUpdatesCounter.increment();
@@ -101,5 +101,3 @@ public class JdbcUpdater implements LinkUpdater {
     }
 
 }
-
-

@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim
+FROM openjdk:21
 
 COPY ./target/bot.jar bot.jar
 ENV TELEGRAM_TOKEN=${TELEGRAM_TOKEN}

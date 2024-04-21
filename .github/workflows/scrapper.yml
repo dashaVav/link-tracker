@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/scrapper
+  IMAGE_NAME: dashavav/lik-tracker/bot
 
 jobs:
   build:
@@ -41,6 +41,9 @@ jobs:
           title: Code Coverage
           update-comment: true
 
+      - name: Docker image build
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} -f ${{ github.workspace }}/bot/bot.Dockerfile ${{ github.workspace }}/bot
+
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -54,14 +57,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-        with:
-          context: .
-          file: ./scrapper/scrapper.Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Docker image push
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
   checkstyle:
     name: checkstyle

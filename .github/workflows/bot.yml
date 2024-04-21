@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: dashavav/lik-tracker/bot
+  IMAGE_NAME: dashavav/link-tracker/bot
 
 jobs:
   build:

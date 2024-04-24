@@ -3,6 +3,7 @@ package edu.java.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,12 +16,14 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "chats")
 @Table(name = "links")
 public class Link implements Serializable {
     @Id
@@ -34,7 +37,7 @@ public class Link implements Serializable {
     @Column(name = "checkedat", nullable = false)
     private OffsetDateTime checkedAt;
 
-    @ManyToMany(mappedBy = "links")
+    @ManyToMany(mappedBy = "links", fetch = FetchType.EAGER)
     private Set<Chat> chats = new HashSet<>();
 
     public Link(URI url, OffsetDateTime time) {

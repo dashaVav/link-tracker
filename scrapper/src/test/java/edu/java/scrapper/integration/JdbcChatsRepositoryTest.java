@@ -1,9 +1,8 @@
 package edu.java.scrapper.integration;
 
-
 import edu.java.model.Chat;
-import java.util.Optional;
 import edu.java.repositoty.jdbc.JdbcChatsRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class JdbcChatsRepositoryTest extends IntegrationEnvironment {
+public class JdbcChatsRepositoryTest extends JdbcIntegrationEnvironment {
 
     @Autowired
     private JdbcChatsRepository chatsRepository;

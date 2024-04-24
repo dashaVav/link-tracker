@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class JdbcLinksRepositoryTest extends IntegrationEnvironment {
+public class JdbcLinksRepositoryTest extends JdbcIntegrationEnvironment {
 
     private static JdbcLinksRepository linksRepository;
 

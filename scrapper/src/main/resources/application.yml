@@ -26,7 +26,7 @@ spring:
         max.poll.interval.ms: 300000
     topic: updates
     bootstrap-servers: localhost:29091
-    use-queue: true
+    use-queue: false
   jpa:
     show-sql: false
     properties:

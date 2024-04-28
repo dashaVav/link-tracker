@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
 public class JdbcAccessConfiguration {
     @Bean
-    public JdbcLinkService jdbcLinkService(
+    public JdbcLinkService linkService(
         JdbcLinksRepository jdbcLinksRepository,
         JdbcChatsRepository jdbcChatsRepository
     ) {
@@ -25,12 +25,12 @@ public class JdbcAccessConfiguration {
     }
 
     @Bean
-    public JdbcTgChatService jdbcTgChatService(JdbcChatsRepository jdbcChatsRepository) {
+    public JdbcTgChatService tgChatService(JdbcChatsRepository jdbcChatsRepository) {
         return new JdbcTgChatService(jdbcChatsRepository);
     }
 
     @Bean
-    public JdbcLinkUpdater jdbcUpdater(
+    public JdbcLinkUpdater updater(
         JdbcLinksRepository jdbcLinksRepository,
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,

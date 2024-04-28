@@ -12,6 +12,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class JpaLinkService implements LinkService {
@@ -21,6 +22,7 @@ public class JpaLinkService implements LinkService {
     private static final String CHAT_NOT_FOUND_MESSAGE = "Chat with id %d not found";
 
     @Override
+    @Transactional
     public Link add(long tgChatId, URI url) {
         Chat chat = jpaChatRepository.findById(tgChatId)
             .orElseThrow(() -> new ChatIdNotFoundException(String.format(CHAT_NOT_FOUND_MESSAGE, tgChatId)));
@@ -41,6 +43,7 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
+    @Transactional
     public Link remove(long tgChatId, URI url) {
         Chat chat = jpaChatRepository.findById(tgChatId)
             .orElseThrow(() -> new ChatIdNotFoundException(String.format(CHAT_NOT_FOUND_MESSAGE, tgChatId)));

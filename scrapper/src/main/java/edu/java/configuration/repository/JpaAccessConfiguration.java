@@ -20,17 +20,17 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
 public class JpaAccessConfiguration {
     @Bean
-    public LinkService jpaLinkService(JpaLinkRepository jpaLinkRepository, JpaChatRepository jpaChatRepository) {
+    public LinkService linkService(JpaLinkRepository jpaLinkRepository, JpaChatRepository jpaChatRepository) {
         return new JpaLinkService(jpaLinkRepository, jpaChatRepository);
     }
 
     @Bean
-    public TgChatService jpaTgChatService(JpaLinkRepository jpaLinkRepository, JpaChatRepository jpaChatRepository) {
+    public TgChatService tgChatService(JpaLinkRepository jpaLinkRepository, JpaChatRepository jpaChatRepository) {
         return new JpaTgChatService(jpaLinkRepository, jpaChatRepository);
     }
 
     @Bean
-    public LinkUpdater jpaUpdate(
+    public LinkUpdater update(
         JpaLinkRepository jpaLinkRepository,
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,

@@ -8,6 +8,7 @@ import edu.java.repositoty.jpa.JpaChatRepository;
 import edu.java.repositoty.jpa.JpaLinkRepository;
 import edu.java.service.TgChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class JpaTgChatService implements TgChatService {
@@ -15,6 +16,7 @@ public class JpaTgChatService implements TgChatService {
     private final JpaChatRepository jpaChatRepository;
 
     @Override
+    @Transactional
     public void register(long tgChatId, AddChatRequest addChatRequest) {
         jpaChatRepository.findById(tgChatId).ifPresent(c -> {
             throw new ReRegistrationException(String.format("Chat with id %d already added", tgChatId));
@@ -25,6 +27,7 @@ public class JpaTgChatService implements TgChatService {
     }
 
     @Override
+    @Transactional
     public void unregister(long tgChatId) {
         Chat chat = jpaChatRepository.findById(tgChatId)
             .orElseThrow(() -> new ChatIdNotFoundException(String.format("Chat with id %d not found", tgChatId)));

@@ -17,6 +17,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class JpaLinkUpdater implements LinkUpdater {
@@ -30,6 +31,7 @@ public class JpaLinkUpdater implements LinkUpdater {
     private static final Duration UPDATE_TIME = Duration.ofHours(1);
 
     @Override
+    @Transactional
     public void update() {
         OffsetDateTime time = OffsetDateTime.now().minus(UPDATE_TIME);
         List<Link> linksToCheck = linkRepository.findLinksToCheck(time);

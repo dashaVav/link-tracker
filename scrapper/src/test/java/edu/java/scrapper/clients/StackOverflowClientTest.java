@@ -40,27 +40,25 @@ public class StackOverflowClientTest {
         OffsetDateTime lastActivityDate = OffsetDateTime.now(ZoneOffset.ofHours(3));
         long answerCount = 5;
         String responseBody = String.format(
-            "{\"items\": [{\"owner\": {\"account_id\": 54321, \"display_name\": \"Test User\"}, \"last_activity_date\": \"%s\", \"question_id\": %d, \"answer_count\": %d}]}",
+            "{\"items\": [{\"owner\": {\"account_id\": 54321, \"display_name\": \"Test User\"}, \"creation_date\": \"%s\", \"question_id\": %d, \"answer_count\": %d}]}",
             lastActivityDate,
             questionId,
             answerCount
         );
 
         wireMockServer.stubFor(get(urlEqualTo(
-            "/questions/" + questionId + "?order=desc&sort=activity&site=stackoverflow"))
+            "/questions/" + questionId + "/answers?order=desc&site=stackoverflow"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(responseBody)));
 
-        StackOverflowDTO stackOverflowDTO = stackOverflowClient.fetchQuestion(questionId);
+        StackOverflowDTO stackOverflowDTO = stackOverflowClient.fetchAnswersByQuestionId(questionId);
 
         Assertions.assertEquals(1, stackOverflowDTO.items().size());
         StackOverflowDTO.Item item = stackOverflowDTO.items().getFirst();
         Assertions.assertEquals(Optional.of(questionId).get(), item.questionId());
-        Assertions.assertEquals(answerCount, item.answerCount());
-        Assertions.assertEquals(lastActivityDate, item.lastActivityDate().withOffsetSameInstant(ZoneOffset.ofHours(3)));
-        Assertions.assertEquals(54321, item.owner().accountId());
+        Assertions.assertEquals(lastActivityDate, item.creationDate().withOffsetSameInstant(ZoneOffset.ofHours(3)));
         Assertions.assertEquals("Test User", item.owner().displayName());
     }
 
@@ -74,6 +72,6 @@ public class StackOverflowClientTest {
             .willReturn(aResponse()
                 .withStatus(404)));
 
-        assertThrows(WebClientResponseException.class, () -> stackOverflowClient.fetchQuestion(questionId));
+        assertThrows(WebClientResponseException.class, () -> stackOverflowClient.fetchAnswersByQuestionId(questionId));
     }
 }

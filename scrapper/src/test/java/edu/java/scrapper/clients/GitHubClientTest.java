@@ -5,6 +5,7 @@ import edu.java.client.GitHubClient;
 import edu.java.client.impl.GitHubClientImpl;
 import edu.java.dto.github.GitHubDTO;
 import java.time.OffsetDateTime;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,23 +41,36 @@ public class GitHubClientTest {
         String fullName = "testOwner/testRepo";
         String pushedAt = "2022-01-01T12:00:00Z";
         String responseBody = String.format(
-            "{\"owner\": {\"login\": \"%s\", \"id\": 123}, \"full_name\": \"%s\", \"pushed_at\": \"%s\"}",
+                """
+                        {
+                         "actor": {"login": "%s"},
+                         "type": "PushEvent",
+                         "repo": {"url": "%s"},
+                         "created_at": "%s",
+                         "payload": {
+                            "commits": [{"message": "Initial commit"}],
+                            "ref": "main",
+                            "action": "push",
+                            "pull_request": {"title": "Merge pull request #1 from feature/new-feature"},
+                            "issue": {"title": "Fix bug #123"}
+                         }
+                        }""",
             owner,
             fullName,
             pushedAt
         );
 
-        wireMockServer.stubFor(get(urlEqualTo("/repos/" + owner + "/" + repo))
+        wireMockServer.stubFor(get(urlEqualTo("/repos/" + owner + "/" + repo + "/events"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(responseBody)));
 
-        GitHubDTO gitHubDTO = gitHubClient.fetchRepo(owner, repo);
+        List<GitHubDTO> gitHubDTO = gitHubClient.fetchRepo(owner, repo);
 
-        Assertions.assertEquals(owner, gitHubDTO.owner().login());
-        Assertions.assertEquals(fullName, gitHubDTO.fullName());
-        Assertions.assertEquals(OffsetDateTime.parse(pushedAt), gitHubDTO.pushedAt());
+        Assertions.assertEquals(owner, gitHubDTO.getFirst().actor().login());
+        Assertions.assertEquals(fullName, gitHubDTO.getFirst().repo().url());
+        Assertions.assertEquals(OffsetDateTime.parse(pushedAt), gitHubDTO.getFirst().createdAt());
     }
 
     @Test

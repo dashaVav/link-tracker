@@ -1,7 +1,10 @@
 package edu.java.client;
 
 import edu.java.dto.github.GitHubDTO;
+import java.util.List;
 
 public interface GitHubClient {
-    GitHubDTO fetchRepo(String owner, String repo);
+    List<GitHubDTO> fetchRepo(String owner, String repo);
+
+    String getMessage(GitHubDTO event);
 }

@@ -1,7 +1,6 @@
 package edu.java.domain.repositoty;
 
 import edu.java.domain.model.Link;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +37,7 @@ public class JdbcLinksRepository {
         return links.getFirst();
     }
 
-    public List<Link> findLinksToCheck(LocalDateTime date) {
+    public List<Link> findLinksToCheck(OffsetDateTime date) {
         String sql = "select * from links where checkedAt < ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Link.class), date);
     }

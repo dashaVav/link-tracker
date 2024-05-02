@@ -5,7 +5,6 @@ import edu.java.domain.model.Link;
 import edu.java.domain.repositoty.JdbcChatsRepository;
 import edu.java.domain.repositoty.JdbcLinksRepository;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +77,7 @@ public class JdbcLinksRepositoryTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void findLinksToCheckTest() {
-        List<Link> linkList = linksRepository.findLinksToCheck(LocalDateTime.now().minusNanos(1));
+        List<Link> linkList = linksRepository.findLinksToCheck(OffsetDateTime.now().minusNanos(1));
 
         Assertions.assertEquals(1L, linkList.getFirst().getId());
         Assertions.assertEquals(testUrl, linkList.getFirst().getUrl().toString());

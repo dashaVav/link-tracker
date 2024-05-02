@@ -9,6 +9,7 @@ import edu.java.dto.stackoverflow.StackOverflowDTO;
 import edu.java.model.Link;
 import edu.java.service.LinkUpdater;
 import edu.java.service.scheduler.NotificationService;
+import io.micrometer.core.instrument.Counter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class JdbcUpdater implements LinkUpdater {
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final NotificationService notificationService;
+    private final Counter processedUpdatesCounter;
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final Duration UPDATE_TIME = Duration.ofSeconds(1);
@@ -64,6 +66,7 @@ public class JdbcUpdater implements LinkUpdater {
                         linkRepository.tgChatIdsByLinkId(link.getId())
                     );
                     notificationService.sendNotification(linkUpdateResponse);
+                    processedUpdatesCounter.increment();
                 }
             }
         }
@@ -91,6 +94,7 @@ public class JdbcUpdater implements LinkUpdater {
                         linkRepository.tgChatIdsByLinkId(link.getId())
                     );
                     notificationService.sendNotification(linkUpdateResponse);
+                    processedUpdatesCounter.increment();
                 }
             }
         }

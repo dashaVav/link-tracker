@@ -65,3 +65,28 @@ retry:
   delay: 10000
   status-code: INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS, BAD_GATEWAY, GATEWAY_TIMEOUT, SERVICE_UNAVAILABLE, FORBIDDEN
 
+management:
+  server:
+    port: 8081
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    processed-updates:
+      name: processed_updates_count
+
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include:
+          - info
+          - health
+          - prometheus
+      path-mapping:
+        prometheus: metrics
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true

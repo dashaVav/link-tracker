@@ -13,6 +13,13 @@ spring:
       - rate-limit-buckets-bot
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
+  kafka:
+    bootstrap-servers: localhost:29091
+    trusted-packages: "*"
+    dlq-topic: dql-topic
+    topic: updates
+    group-id: updates1
+
 
 bucket4j:
   enabled: true

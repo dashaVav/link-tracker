@@ -2,7 +2,7 @@ package edu.java.bot.service;
 
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.bot.BotInitializer;
-import edu.java.bot.dto.api.LinkUpdateRequest;
+import edu.java.bot.dto.api.LinkUpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class UpdateProcessor {
     private final BotInitializer bot;
 
-    public void handleUpdates(LinkUpdateRequest update) {
-        for (long id : update.tgChatIds()) {
-            bot.sendUpdate(new SendMessage(id, update.description() + "\n" + update.url()));
+    public void handleUpdates(LinkUpdateResponse update) {
+        for (long id : update.getTgChatIds()) {
+            bot.sendUpdate(new SendMessage(id, update.getDescription() + "\n" + update.getUrl()));
         }
     }
 }

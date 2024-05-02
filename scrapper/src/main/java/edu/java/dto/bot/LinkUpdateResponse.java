@@ -10,6 +10,6 @@ public record LinkUpdateResponse(
     Long id,
     @NotNull URI url,
     @NotBlank String description,
-    @NotEmpty List<Long> tgChatIds
-) {
+    @NotEmpty List<Long> tgChatIds) {
 }
+

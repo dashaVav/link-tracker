@@ -1,5 +1,7 @@
-package edu.java.domain.model;
+package edu.java.model;
 
+import java.net.URI;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Chat {
+public class Link {
     private long id;
-    private String name;
+    private URI url;
+    private OffsetDateTime checkedAt;
 }

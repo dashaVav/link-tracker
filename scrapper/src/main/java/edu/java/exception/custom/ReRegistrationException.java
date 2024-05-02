@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class ReRegistrationException extends CustomApiException {
     public ReRegistrationException(String msg) {
-        super("Попытка повторной регистрации.", HttpStatus.CONFLICT, msg);
+        super("Вы уже зарегистрированы.", HttpStatus.CONFLICT, msg);
     }
 }

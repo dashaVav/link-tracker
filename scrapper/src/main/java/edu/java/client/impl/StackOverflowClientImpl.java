@@ -22,6 +22,6 @@ public class StackOverflowClientImpl implements StackOverflowClient {
 
     @Override
     public String getMessage(StackOverflowDTO.Item event) {
-        return String.format("%s добавил новый ответ на вопрос", event.owner().displayName());
+        return String.format("%s добавил(а) новый ответ на вопрос", event.owner().displayName());
     }
 }

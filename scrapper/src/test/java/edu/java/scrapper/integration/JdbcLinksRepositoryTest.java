@@ -1,7 +1,7 @@
 package edu.java.scrapper.integration;
 
-import edu.java.domain.model.Chat;
-import edu.java.domain.model.Link;
+import edu.java.model.Chat;
+import edu.java.model.Link;
 import edu.java.domain.repositoty.JdbcChatsRepository;
 import edu.java.domain.repositoty.JdbcLinksRepository;
 import java.net.URI;

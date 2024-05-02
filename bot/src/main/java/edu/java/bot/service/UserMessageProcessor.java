@@ -3,7 +3,6 @@ package edu.java.bot.service;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.comand.Command;
-import edu.java.bot.repository.ChatRepository;
 import edu.java.bot.utils.CommandUtils;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class UserMessageProcessor {
 
     private List<Command> commands;
-    private final ChatRepository repository;
 
     public SendMessage handleUpdate(Update update) {
         Long chatId = update.message().chat().id();
@@ -25,15 +23,6 @@ public class UserMessageProcessor {
                 if (!commandName.isCorrect(update)) {
                     return new SendMessage(chatId, "Команда введена не корректно.");
                 }
-
-                if (!commandName.supports(update, repository)) {
-                    return new SendMessage(
-                        chatId,
-                        "Увы, но эта команда доступна только для зарегистрированных пользователей. "
-                            + "Пожалуйста, зарегистрируйтесь для доступа к ней."
-                    );
-                }
-
                 return new SendMessage(chatId, commandName.handle(update));
             }
         }

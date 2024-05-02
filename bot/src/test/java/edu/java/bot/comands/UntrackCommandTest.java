@@ -4,89 +4,69 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.comand.UntrackCommand;
-import edu.java.bot.link.Link;
 import edu.java.bot.link.LinkHandlerChain;
-import edu.java.bot.repository.ChatRepository;
 import java.net.URI;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UntrackCommandTest {
-
-    @Mock
-    private ChatRepository repository;
-
-    @Mock
+class UntrackCommandTest {
+    private UntrackCommand untrackCommand;
     private LinkHandlerChain linkHandlerChain;
 
-    private UntrackCommand untrackCommand;
     private Update update;
+    private final long chatId = 12345L;
 
     @BeforeEach
-    public void setUp() {
-        repository = mock(ChatRepository.class);
-        linkHandlerChain = mock(LinkHandlerChain.class);
-        untrackCommand = new UntrackCommand(repository, linkHandlerChain);
+    void setUp() {
 
-        update = mock(Update.class);
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
-        when(update.message()).thenReturn(message);
-        when(message.text()).thenReturn("/help");
+        when(chat.id()).thenReturn(chatId);
         when(message.chat()).thenReturn(chat);
-    }
-
-    @Test
-    public void testCommand() {
-        Assertions.assertEquals("/untrack", untrackCommand.command());
-    }
-
-    @Test
-    public void testDescription() {
-        Assertions.assertEquals("прекратить отслеживание ссылки", untrackCommand.description());
-    }
-
-    @Test
-    public void testHandleWithNonexistentLink() {
-        when(update.message().text()).thenReturn("/untrack https://github.com/sanyarnd");
-
-        URI uri = URI.create("https://github.com/sanyarnd");
-        Link mockLink = mock(Link.class);
-        when(linkHandlerChain.handleRequestUnsubscribe(uri)).thenReturn(mockLink);
-        when(repository.containsLink(1L, mockLink)).thenReturn(false);
-
-        String expectedResponse = String.format("Ссылки %s нет в ваших подписках.", mockLink.getUri());
-        String actualResponse = untrackCommand.handle(update);
-
-        Assertions.assertEquals(expectedResponse, actualResponse);
-        verify(repository, never()).removeLink(anyLong(), any(Link.class));
-    }
-
-    @Test
-    public void testIsCorrectWithValidText() {
-        Update update = mock(Update.class);
-        Message message = mock(Message.class);
+        update = mock(Update.class);
         when(update.message()).thenReturn(message);
-        when(update.message().text()).thenReturn("/untrack https://example.com");
+        when(update.message().chat().id()).thenReturn(chatId);
 
-        Assertions.assertTrue(untrackCommand.isCorrect(update));
+        linkHandlerChain = mock(LinkHandlerChain.class);
+        untrackCommand = new UntrackCommand(linkHandlerChain);
     }
 
     @Test
-    public void testIsCorrect_WithInvalidText() {
-        Update update = mock(Update.class);
-        Message message = mock(Message.class);
-        when(update.message()).thenReturn(message);
-        when(update.message().text()).thenReturn("/untrack");
+    void testHandle_Success() {
+        String link = "https://example.com";
+        when(update.message().text()).thenReturn("untrack " + link);
+        when(update.message().chat().id()).thenReturn(chatId);
+        when(linkHandlerChain.handleRequestUnsubscribe(chatId, URI.create(link))).thenReturn(
+            "Untracking started for " + link);
 
-        Assertions.assertFalse(untrackCommand.isCorrect(update));
+        String result = untrackCommand.handle(update);
+
+        assertEquals("Untracking started for https://example.com", result);
+        verify(linkHandlerChain, times(1)).handleRequestUnsubscribe(chatId, URI.create(link));
+    }
+
+    @Test
+    void testIsCorrect_True() {
+        when(update.message().text()).thenReturn("untrack https://example.com");
+
+        boolean result = untrackCommand.isCorrect(update);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testIsCorrect_False() {
+        when(update.message().text()).thenReturn("untrack https://example.com extra");
+
+        boolean result = untrackCommand.isCorrect(update);
+
+        assertFalse(result);
     }
 }

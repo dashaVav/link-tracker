@@ -2,15 +2,14 @@ package edu.java.bot.comand;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.client.ScrapperClient;
-import edu.java.bot.dto.scrapper.request.AddChatRequest;
 import edu.java.bot.exception.api.ApiBadRequestException;
-import edu.java.bot.exception.api.ApiReAddingException;
+import edu.java.bot.exception.api.ApiNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class StartCommand implements Command {
+public class EndCommand implements Command {
     private final ScrapperClient client;
-    private static final CommandInfo COMMAND_INFO = CommandInfo.START;
+    private static final CommandInfo COMMAND_INFO = CommandInfo.END;
 
     @Override
     public String command() {
@@ -25,13 +24,11 @@ public class StartCommand implements Command {
     @Override
     public String handle(Update update) {
         String message;
+        long id = update.message().chat().id();
         try {
-            client.addChat(
-                update.message().chat().id(),
-                new AddChatRequest(update.message().chat().username())
-            );
-            message = "Регистрация прошла успешно. Добро пожаловать!";
-        } catch (ApiReAddingException e) {
+            client.removeChat(id);
+            message = "Работа с ботом успешно завершена!";
+        } catch (ApiNotFoundException e) {
             message = e.getApiErrorResponse().description();
         } catch (ApiBadRequestException e) {
             message = "Ошибка! Попробуйте позже!";

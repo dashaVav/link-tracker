@@ -1,9 +1,9 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.model.Link;
 import edu.java.domain.repositoty.JdbcLinksRepository;
 import edu.java.exception.custom.LinkNotFoundException;
 import edu.java.exception.custom.ReAddingLinkException;
+import edu.java.model.Link;
 import edu.java.service.LinkService;
 import edu.java.service.TgChatService;
 import java.net.URI;

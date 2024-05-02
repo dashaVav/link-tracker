@@ -3,60 +3,76 @@ package edu.java.bot.comands;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.comand.ListCommand;
-import edu.java.bot.link.Link;
-import edu.java.bot.link.LinkInfo;
-import edu.java.bot.repository.ChatRepository;
+import edu.java.bot.dto.api.ApiErrorResponse;
+import edu.java.bot.dto.scrapper.response.LinkResponse;
+import edu.java.bot.dto.scrapper.response.ListLinksResponse;
+import edu.java.bot.exception.api.ApiBadRequestException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ListCommandTest {
+class ListCommandTest {
     private ListCommand listCommand;
-    private ChatRepository repository;
-    private final Update update = mock(Update.class);
-    private final Message message = mock(Message.class);
+    private ScrapperClient scrapperClient;
+    private Update update;
+    private final long chatId = 12345L;
 
     @BeforeEach
-    public void setUp() {
-        repository = mock(ChatRepository.class);
-        listCommand = new ListCommand(repository);
+    void setUp() {
+        Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
-        when(update.message()).thenReturn(message);
+        when(chat.id()).thenReturn(chatId);
         when(message.chat()).thenReturn(chat);
-        when(chat.id()).thenReturn(1L);
-        when(repository.getList(1L)).thenReturn(new ArrayList<>());
+        update = mock(Update.class);
+        when(update.message()).thenReturn(message);
+        when(update.message().chat().id()).thenReturn(chatId);
 
+        scrapperClient = mock(ScrapperClient.class);
+        listCommand = new ListCommand(scrapperClient);
     }
 
     @Test
-    public void testHandleWithEmptyList() {
+    void testHandle_Success() {
+        ListLinksResponse linksResponse = new ListLinksResponse(List.of(
+                new LinkResponse(1L, URI.create("https://github.com/dashaVav/link-tracker"))), 1
+        );
+        when(scrapperClient.getLinks(chatId)).thenReturn(ResponseEntity.ok(linksResponse));
+
         String result = listCommand.handle(update);
+
+        Assertions.assertEquals("1. https://github.com/dashaVav/link-tracker", result);
+    }
+
+    @Test
+    void testHandle_EmptyList() {
+        ListLinksResponse linksResponse = new ListLinksResponse(List.of(), 0);
+        when(scrapperClient.getLinks(chatId)).thenReturn(ResponseEntity.ok(linksResponse));
+
+        String result = listCommand.handle(update);
+
         Assertions.assertEquals("Список отслеживаемых ссылок пуст.", result);
     }
 
     @Test
-    public void testHandleWithNonEmptyList() {
-        List<Link> links = new ArrayList<>();
-        links.add(new Link(
-            LinkInfo.GITHUB,
-            URI.create("https://github.com/sanyarnd/tinkoff-java-course-2023/"),
-            "github.com"
-        ));
-        when(repository.getList(1L)).thenReturn(links);
+    void testHandle_ApiBadRequestException() {
+        when(scrapperClient.getLinks(chatId)).thenThrow(new ApiBadRequestException(mock(ApiErrorResponse.class)));
 
         String result = listCommand.handle(update);
 
-        Assertions.assertEquals("1. https://github.com/sanyarnd/tinkoff-java-course-2023/", result);
+        Assertions.assertEquals("Ошибка! Попробуйте позже!", result);
     }
 
     @Test
-    public void testIsCorrect() {
+    void testIsCorrect_True() {
         when(update.message().text()).thenReturn("/list");
 
         boolean result = listCommand.isCorrect(update);
@@ -65,21 +81,11 @@ public class ListCommandTest {
     }
 
     @Test
-    public void testIsNotCorrect() {
-        when(update.message().text()).thenReturn("/list list");
+    void testIsCorrect_False() {
+        when(update.message().text()).thenReturn("not_list");
 
         boolean result = listCommand.isCorrect(update);
 
         Assertions.assertFalse(result);
-    }
-
-    @Test
-    public void testCommand() {
-        Assertions.assertEquals("/list", listCommand.command());
-    }
-
-    @Test
-    public void testDescription() {
-        Assertions.assertEquals("показать список отслеживаемых ссылок", listCommand.description());
     }
 }

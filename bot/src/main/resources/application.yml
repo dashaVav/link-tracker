@@ -21,4 +21,4 @@ springdoc:
 
 api:
   scrapper:
-    base-url: http://localhost:8090
+    base-url: http://localhost:8080

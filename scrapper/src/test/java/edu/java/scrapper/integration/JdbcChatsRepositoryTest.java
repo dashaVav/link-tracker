@@ -1,6 +1,6 @@
 package edu.java.scrapper.integration;
 
-import edu.java.domain.model.Chat;
+import edu.java.model.Chat;
 import edu.java.domain.repositoty.JdbcChatsRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;

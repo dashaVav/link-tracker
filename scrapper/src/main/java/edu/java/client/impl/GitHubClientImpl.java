@@ -28,32 +28,36 @@ public class GitHubClientImpl implements GitHubClient {
         String message;
         switch (event.type()) {
             case "CreateEvent" -> {
-                message = String.format("%s создал ветку %s", event.actor().login(), event.payload().branchName());
+                message = String.format("%s создал(а) ветку %s", event.actor().login(), event.payload().branchName());
             }
             case "DeleteEvent" -> {
-                message = String.format("%s удалил ветку %s", event.actor().login(), event.payload().branchName());
+                message = String.format("%s удалил(а) ветку %s", event.actor().login(), event.payload().branchName());
             }
             case "IssuesEvent" -> {
                 if (event.payload().action().equals(OPENED)) {
                     message =
-                        String.format("%s открыл тикет \"%s\"", event.actor().login(), event.payload().issue().title());
+                        String.format("%s открыл(а) тикет \"%s\"",
+                            event.actor().login(), event.payload().issue().title()
+                        );
                 } else {
                     message =
-                        String.format("%s закрыл тикет \"%s\"", event.actor().login(), event.payload().issue().title());
+                        String.format("%s закрыл(а) тикет \"%s\"",
+                            event.actor().login(), event.payload().issue().title()
+                        );
                 }
             }
             case "PullRequestEvent" -> {
                 if (event.payload().action().equals(OPENED)) {
                     message =
                         String.format(
-                            "%s открыл pull request \"%s\"",
+                            "%s открыл(а) pull request \"%s\"",
                             event.actor().login(),
                             event.payload().pullRequest().title()
                         );
                 } else {
                     message =
                         String.format(
-                            "%s закрыл pull request \"%s\"",
+                            "%s закрыл(а) pull request \"%s\"",
                             event.actor().login(),
                             event.payload().pullRequest().title()
                         );
@@ -61,7 +65,7 @@ public class GitHubClientImpl implements GitHubClient {
             }
             case "PushEvent" -> {
                 message = String.format(
-                    "%s сделал commit \"%s\" на ветке %s",
+                    "%s сделал(а) commit \"%s\" на ветке %s",
                     event.actor().login(),
                     event.payload().commits().getFirst().message(),
                     event.payload().branchName().split("/")[2]

@@ -11,8 +11,6 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.DirectoryResourceAccessor;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -23,25 +21,18 @@ import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public abstract class IntegrationEnvironment {
+public abstract class JpaIntegrationEnvironment {
 
     public static PostgreSQLContainer<?> POSTGRES;
-    protected static JdbcTemplate jdbcTemplate;
 
     static {
-        POSTGRES = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-            .withDatabaseName("scrapper")
-            .withUsername("postgres")
-            .withPassword("postgres");
+        POSTGRES = new PostgreSQLContainer<>(DockerImageName.parse("postgres:16"))
+            .withDatabaseName("scrapper1")
+            .withUsername("postgres1")
+            .withPassword("postgres1");
         POSTGRES.start();
 
         runMigrations(POSTGRES);
-
-        jdbcTemplate = new JdbcTemplate(DataSourceBuilder.create()
-            .url(POSTGRES.getJdbcUrl())
-            .username(POSTGRES.getUsername())
-            .password(POSTGRES.getPassword())
-            .build());
     }
 
     static void runMigrations(JdbcDatabaseContainer<?> c) {
@@ -69,3 +60,4 @@ public abstract class IntegrationEnvironment {
         registry.add("spring.datasource.password", POSTGRES::getPassword);
     }
 }
+

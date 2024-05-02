@@ -2,7 +2,8 @@ app:
   scheduler:
     enable: true
     interval: 1h
-    force-check-delay: 10s
+    force-check-delay: 1h
+  database-access-type: jpa # jdbc, jpa
 
 spring:
   application:
@@ -25,7 +26,15 @@ spring:
         max.poll.interval.ms: 300000
     topic: updates
     bootstrap-servers: localhost:29091
-    use-queue: true
+    use-queue: false
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    database: postgresql
+    database-platform:
 
 bucket4j:
   enabled: true
@@ -40,6 +49,7 @@ bucket4j:
             - capacity: 60
               time: 1
               unit: minutes
+
 
 server:
   port: 8080

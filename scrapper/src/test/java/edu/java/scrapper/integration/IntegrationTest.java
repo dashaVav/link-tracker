@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import static edu.java.scrapper.integration.IntegrationEnvironment.POSTGRES;
+import static edu.java.scrapper.integration.JdbcIntegrationEnvironment.POSTGRES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

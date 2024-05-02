@@ -2,8 +2,8 @@ package edu.java.scrapper.integration;
 
 import edu.java.model.Chat;
 import edu.java.model.Link;
-import edu.java.domain.repositoty.JdbcChatsRepository;
-import edu.java.domain.repositoty.JdbcLinksRepository;
+import edu.java.repositoty.jdbc.JdbcChatsRepository;
+import edu.java.repositoty.jdbc.JdbcLinksRepository;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,10 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class JdbcLinksRepositoryTest extends IntegrationEnvironment {
+public class JdbcLinksRepositoryTest extends JdbcIntegrationEnvironment {
 
     private static JdbcLinksRepository linksRepository;
-    private static JdbcChatsRepository chatsRepository;
 
     private static final String testUrl = "https://example.com";
     private static final Chat testChat = new Chat(1L, "Test Chat");
@@ -30,7 +29,7 @@ public class JdbcLinksRepositoryTest extends IntegrationEnvironment {
     @BeforeAll
     public static void setUp() {
         linksRepository = new JdbcLinksRepository(jdbcTemplate);
-        chatsRepository = new JdbcChatsRepository(jdbcTemplate);
+        JdbcChatsRepository chatsRepository = new JdbcChatsRepository(jdbcTemplate);
 
         chatsRepository.add(testChat.getId(), testChat.getName());
         linksRepository.add(testUrl);

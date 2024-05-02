@@ -14,24 +14,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController @RequiredArgsConstructor public class LinksApiController implements LinksApi {
-    private final LinkService jdbcLinkService;
+    private final LinkService linkService;
     private final LinkMapper linkMapper;
 
     @Override public ResponseEntity<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
         return new ResponseEntity<>(
-            linkMapper.toDto(jdbcLinkService.remove(tgChatId, removeLinkRequest.link())),
+            linkMapper.toDto(linkService.remove(tgChatId, removeLinkRequest.link())),
             HttpStatus.OK
         );
     }
 
     @Override public ResponseEntity<ListLinksResponse> getLinks(Long tgChatId) {
-        List<LinkResponse> linkResponses = linkMapper.toDtoList(jdbcLinkService.listAll(tgChatId));
+        List<LinkResponse> linkResponses = linkMapper.toDtoList(linkService.listAll(tgChatId));
         return new ResponseEntity<>(new ListLinksResponse(linkResponses, linkResponses.size()), HttpStatus.OK);
     }
 
     @Override public ResponseEntity<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) {
         return new ResponseEntity<>(
-            linkMapper.toDto(jdbcLinkService.add(tgChatId, addLinkRequest.link())),
+            linkMapper.toDto(linkService.add(tgChatId, addLinkRequest.link())),
             HttpStatus.OK
         );
     }

@@ -1,24 +1,22 @@
 package edu.java.scrapper.integration;
 
 import edu.java.model.Chat;
-import edu.java.domain.repositoty.JdbcChatsRepository;
+import edu.java.repositoty.jdbc.JdbcChatsRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class JdbcChatsRepositoryTest extends IntegrationEnvironment {
+public class JdbcChatsRepositoryTest extends JdbcIntegrationEnvironment {
 
     @Autowired
     private JdbcChatsRepository chatsRepository;

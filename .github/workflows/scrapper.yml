@@ -6,6 +6,9 @@ on:
     paths:
       - .github/workflows/scrapper.yml
       - scrapper/**
+  push:
+    branches:
+      - 'master'
 
 env:
   REGISTRY: ghcr.io

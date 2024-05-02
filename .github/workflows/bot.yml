@@ -6,6 +6,9 @@ on:
     paths:
       - .github/workflows/bot.yml
       - bot/**
+  push:
+    branches:
+      - 'master'
 
 env:
   REGISTRY: ghcr.io

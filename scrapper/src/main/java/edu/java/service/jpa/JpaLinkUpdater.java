@@ -35,7 +35,7 @@ public class JpaLinkUpdater implements LinkUpdater {
     public void update() {
         OffsetDateTime time = OffsetDateTime.now().minus(UPDATE_TIME);
         List<Link> linksToCheck = linkRepository.findLinksToCheck(time);
-        for (Link link : linksToCheck) {
+        for (Link link : linksToCheck.reversed()) {
             if (link.getUrl().toString().contains("github.com")) {
                 gitHibProcess(link);
             } else if (link.getUrl().toString().contains("stackoverflow.com")) {

@@ -32,7 +32,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
     public void update() {
         OffsetDateTime time = OffsetDateTime.now().minus(UPDATE_TIME);
         List<Link> linksToCheck = linkRepository.findLinksToCheck(time);
-        for (Link link : linksToCheck) {
+        for (Link link : linksToCheck.reversed()) {
             if (link.getUrl().toString().contains("github.com")) {
                 gitHibProcess(link);
             } else if (link.getUrl().toString().contains("stackoverflow.com")) {
@@ -54,7 +54,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
         }
 
         for (GitHubDTO event : repo.reversed()) {
-            if (event.createdAt().isAfter(link.getCheckedAt())) {
+            if (event.createdAt() != null && event.createdAt().isAfter(link.getCheckedAt())) {
                 String message = gitHubClient.getMessage(event);
                 if (!message.isEmpty()) {
                     LinkUpdateResponse linkUpdateResponse = new LinkUpdateResponse(

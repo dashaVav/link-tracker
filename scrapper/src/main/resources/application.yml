@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
+    interval: 60s
     force-check-delay: 10s
 
 spring:
@@ -13,6 +13,25 @@ spring:
     password: postgres
   liquibase:
     enabled: false
+  cache:
+    cache-names:
+      - rate-limit-buckets-scrapper
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets-scrapper
+      url: .*
+      http-status-code: TOO_MANY_REQUESTS
+      http-response-body: "{ \"description\": \"Too many requests\", \"code\": \"429 TOO MANY REQUESTS\" }"
+      rate-limits:
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: 60
+              time: 1
+              unit: minutes
 
 server:
   port: 8080
@@ -31,3 +50,10 @@ api:
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+retry:
+  max-attempts: 10
+  strategy: const # const, exp
+  delay: 10000
+  status-code: INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS, BAD_GATEWAY, GATEWAY_TIMEOUT, SERVICE_UNAVAILABLE, FORBIDDEN
+

@@ -6,6 +6,7 @@ import edu.java.client.StackOverflowClient;
 import edu.java.client.impl.BotClientImpl;
 import edu.java.client.impl.GitHubClientImpl;
 import edu.java.client.impl.StackOverflowClientImpl;
+import edu.java.configuration.retry.RetryProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,23 +18,23 @@ public class ClientConfiguration {
     private String githubBaseUrl;
 
     @Bean
-    public GitHubClient gitHubWebClient() {
-        return new GitHubClientImpl(githubBaseUrl);
+    public GitHubClient gitHubWebClient(RetryProperties retryProperties) {
+        return new GitHubClientImpl(githubBaseUrl, retryProperties);
     }
 
     @Value("${api.stackoverflow.base-url:${api.stackoverflow.default-url}}")
     private String stackoverflowBaseUrl;
 
     @Bean
-    public StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClientImpl(stackoverflowBaseUrl);
+    public StackOverflowClient stackOverflowClient(RetryProperties retryProperties) {
+        return new StackOverflowClientImpl(stackoverflowBaseUrl, retryProperties);
     }
 
     @Value("${api.bot.base-url}")
     private String botBaseUrl;
 
     @Bean
-    public BotClient botClient() {
-        return new BotClientImpl(botBaseUrl);
+    public BotClient botClient(RetryProperties retryProperties) {
+        return new BotClientImpl(botBaseUrl, retryProperties);
     }
 }

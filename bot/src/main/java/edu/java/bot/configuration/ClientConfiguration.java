@@ -2,6 +2,7 @@ package edu.java.bot.configuration;
 
 import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.client.ScrapperClientImpl;
+import edu.java.bot.configuration.retry.RetryProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,8 @@ public class ClientConfiguration {
     private String botBaseUrl;
 
     @Bean
-    public ScrapperClient botClient() {
-        return new ScrapperClientImpl(botBaseUrl);
+    public ScrapperClient botClient(RetryProperties retryProperties) {
+        return new ScrapperClientImpl(botBaseUrl, retryProperties);
     }
 }
 

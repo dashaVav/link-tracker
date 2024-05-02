@@ -8,6 +8,25 @@ spring:
     time-zone: UTC
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  cache:
+    cache-names:
+      - rate-limit-buckets-bot
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets-bot
+      url: .*
+      http-status-code: TOO_MANY_REQUESTS
+      http-response-body: "{ \"description\": \"Too many requests\", \"code\": \"429 TOO MANY REQUESTS\" }"
+      rate-limits:
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: 60
+              time: 1
+              unit: minutes
 
 server:
   port: 8090
@@ -22,3 +41,9 @@ springdoc:
 api:
   scrapper:
     base-url: http://localhost:8080
+
+retry:
+  max-attempts: 10
+  strategy: const # const, exp
+  delay: 10000
+  status-code: INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS, BAD_GATEWAY, GATEWAY_TIMEOUT, SERVICE_UNAVAILABLE, FORBIDDEN

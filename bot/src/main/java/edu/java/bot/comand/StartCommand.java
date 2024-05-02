@@ -5,6 +5,7 @@ import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.dto.scrapper.request.AddChatRequest;
 import edu.java.bot.exception.api.ApiBadRequestException;
 import edu.java.bot.exception.api.ApiReAddingException;
+import edu.java.bot.exception.api.ResourceUnavailableException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class StartCommand implements Command {
             message = "Регистрация прошла успешно. Добро пожаловать!";
         } catch (ApiReAddingException e) {
             message = e.getApiErrorResponse().description();
-        } catch (ApiBadRequestException e) {
+        } catch (ApiBadRequestException | ResourceUnavailableException e) {
             message = "Ошибка! Попробуйте позже!";
         }
         return message;

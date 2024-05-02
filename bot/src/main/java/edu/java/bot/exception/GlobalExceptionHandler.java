@@ -1,8 +1,6 @@
 package edu.java.bot.exception;
 
 import edu.java.bot.dto.api.ApiErrorResponse;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,10 +16,7 @@ public class GlobalExceptionHandler {
             "Некорректные параметры запроса",
             HttpStatus.BAD_REQUEST.toString(),
             e.getClass().getSimpleName(),
-            e.getMessage(),
-            Arrays.stream(e.getStackTrace())
-                .map(StackTraceElement::toString)
-                .collect(Collectors.toList())
+            e.getMessage()
         );
     }
 }

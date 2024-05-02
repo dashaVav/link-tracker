@@ -11,6 +11,8 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.DirectoryResourceAccessor;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
@@ -22,6 +24,7 @@ import org.testcontainers.utility.DockerImageName;
 public abstract class IntegrationEnvironment {
 
     public static PostgreSQLContainer<?> POSTGRES;
+    protected static JdbcTemplate jdbcTemplate;
 
     static {
         POSTGRES = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
@@ -31,6 +34,12 @@ public abstract class IntegrationEnvironment {
         POSTGRES.start();
 
         runMigrations(POSTGRES);
+
+        jdbcTemplate = new JdbcTemplate(DataSourceBuilder.create()
+            .url(POSTGRES.getJdbcUrl())
+            .username(POSTGRES.getUsername())
+            .password(POSTGRES.getPassword())
+            .build());
     }
 
     static void runMigrations(JdbcDatabaseContainer<?> c) {

@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
-CREATE TABLE IF NOT EXISTS link_chats
+CREATE TABLE IF NOT EXISTS link_chat
 (
-    link_id         BIGINT                     NOT NULL,
-    chat_id         BIGINT                     NOT NULL,
+    linkId         BIGINT                     NOT NULL,
+    chatId         BIGINT                     NOT NULL,
 
-    PRIMARY KEY (link_id, chat_id),
-    FOREIGN KEY (link_id) REFERENCES links (id) ON DELETE CASCADE,
-    FOREIGN KEY (chat_id) REFERENCES chats (id) ON DELETE CASCADE
+    PRIMARY KEY (linkId, chatId),
+    FOREIGN KEY (linkId) REFERENCES links (id) ON DELETE CASCADE,
+    FOREIGN KEY (chatId) REFERENCES chats (id) ON DELETE CASCADE
 );
